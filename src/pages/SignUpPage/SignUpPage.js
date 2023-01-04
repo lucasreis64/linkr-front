@@ -8,14 +8,13 @@ import { CadastroContainer } from "./SignUpStyled";
 
 let tempoMs;
 
-export default function SignUp(props) {
-    const { onFirstLoad, setOnFirstLoad } = props;
+export default function SignUp() {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         email: "",
         password: "",
         username: "",
-        url: "",
+        profile_picture: ""
     });
     const [loading, setLoading] = useState(false);
     tempoMs = 400;
@@ -39,17 +38,17 @@ export default function SignUp(props) {
         const login = axios(URLS.SIGNUP, config);
         login.then(() => {
             setLoading(false);
-            setOnFirstLoad(false);
-            navigate("/sign-in");
+            navigate("/");
         });
         login.catch(({ response }) => {
             if (response.status === 409) {
                 Swal.fire({
                     icon: "error",
                     title: "Conflito!",
-                    text: "Usuário já existe!",
+                    text: response.message,
                     footer: "Tente novamente!",
                 });
+				setLoading(false);
             } else if (response.status === 422) {
                 Swal.fire({
                     icon: "error",
@@ -57,6 +56,16 @@ export default function SignUp(props) {
                     text: response.errors,
                     footer: "Tente novamente!",
                 });
+				setLoading(false);
+            }
+			else if (response.status === 500){
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro no servidor!",
+                    text: "Sentimos muito!",
+                    footer: "Tente novamente!",
+                });
+				setLoading(false);
             } else {
                 Swal.fire({
                     icon: "error",
@@ -64,12 +73,13 @@ export default function SignUp(props) {
                     text: "Cheque sua conexão com a internet!",
                     footer: "Tente novamente!",
                 });
+				setLoading(false);
             }
         });
     }
 
     return (
-        <CadastroContainer loading={loading} firstLoad={onFirstLoad}>
+        <CadastroContainer loading={loading}>
             <div className="logo">
                 <h1>linkr</h1>
                 <h2>
@@ -104,15 +114,15 @@ export default function SignUp(props) {
                     required
                 />
                 <input
-                    name="url"
+                    name="profile_picture"
                     type="url"
                     placeholder="picture url"
-                    value={form.url}
+                    value={form.profile_picture}
                     onChange={handleForm}
                     required
                 />
                 {loading ? (
-                    carregamento
+                    <button>{carregamento}</button>
                 ) : (
                     <button type="submit">Cadastrar</button>
                 )}

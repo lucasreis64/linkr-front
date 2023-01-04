@@ -1,4 +1,4 @@
 export const URLS = {
-  LOGIN: "https://linkr-backend.onrender.com//auth/signin",
-  SIGNUP: "https://linkr-backend.onrender.com//auth/signup",
+  LOGIN: "http://localhost:4000/signin",
+  SIGNUP: "http://localhost:4000/signup",
 };

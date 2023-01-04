@@ -11,11 +11,10 @@ let tempoMs;
 
 export default function SignIn(params) {
     const navigate = useNavigate();
-    const context = useContext(contexto);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const { permanecerConectado, setPermanecerConectado } =
+    const { permanecerConectado, setPermanecerConectado, setToken } =
         useContext(contexto);
     tempoMs = 400;
 
@@ -31,16 +30,16 @@ export default function SignIn(params) {
                 const userInfoSerializada = JSON.stringify(login.data);
                 localStorage.setItem("userInfo", userInfoSerializada);
             }
-            context.setToken(login.data);
-            navigate("/");
+            setToken(login.data);
+            navigate("/timeline");
         } catch (e) {
-            setLoading(false);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Usuário ou senha incorretos!",
                 footer: "Tente novamente!",
             });
+            setLoading(false);
             console.log(e);
         }
     }
@@ -72,7 +71,11 @@ export default function SignIn(params) {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                {loading ? carregamento : <button type="submit">Entrar</button>}
+                {loading ? (
+                    <button>{carregamento}</button>
+                ) : (
+                    <button type="submit">Entrar</button>
+                )}
                 <label>
                     Permanecer conectado?
                     <input
