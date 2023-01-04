@@ -24,5 +24,6 @@ const TimelineContainer = styled.div`
         font-size: 43px;
         color: white;
         font-weight: 700;
+        margin-bottom: 45px;
     }
 `

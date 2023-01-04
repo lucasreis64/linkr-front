@@ -9,14 +9,17 @@ export default function NewPost(){
                 <img src={userphoto} alt="user"/>
             </div>
             <div>
-                <h1>What are you going to share today?</h1>
+                <h2>What are you going to share today?</h2>
                 <Form>
                     <input
+                        className="small"
                         placeholder="http://..."
                     ></input>
-                    <input
+                    <textarea
+                        className="big"
+                        rows="5"
                         placeholder="Awesome article about #javascript"
-                    ></input>
+                    ></textarea>
                     <button>Publish</button>
                 </Form>
             </div>
@@ -32,25 +35,29 @@ const NewPostContainer = styled.div`
     background-color: white;
     padding: 16px 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     position: relative;
+    box-sizing: border-box;
 
-    h1 {
+    h2 {
         font-family: 'Lato', sans-serif;
         font-size: 20px;
         color: #707070;
         font-weight: 300;
+        margin-top: 8px;
+    }
+
+    img {
+        margin-right: 15px;
     }
 `
 const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
 
-    input {
-        width: 503px;
-        height: 30px;
+    input, textarea {
         background-color: #EFEFEF;
         border-radius: 5px;
         border-style: none;
@@ -58,6 +65,19 @@ const Form = styled.form`
 	    font-family: 'Lato';
 	    font-size: 15px;
         font-weight: 300;
+        margin-bottom: 5px;
+        box-sizing: border-box;
+    }
+
+    input {
+        width: 500px;
+        height: 30px;
+    }
+
+    textarea {
+        width: 500px;
+        height: 70px;
+        padding-top: 5px;
     }
 
     button {
@@ -69,7 +89,7 @@ const Form = styled.form`
         color: white;
         font-weight: 700;
         position: absolute;
-        bottom: 20px;
-        right: 25px;
+        bottom: 14px;
+        right: 20px;
     }
 `
