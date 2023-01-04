@@ -8,7 +8,7 @@ export default function NavBar(){
             <img src={logo} alt="logo"/>
             <div>
                 <ion-icon name="chevron-down-outline"></ion-icon>
-                <img src={userphoto} alt="user-photo"/>
+                <img src={userphoto} alt="user"/>
             </div>
         </NavContainer>
     )
