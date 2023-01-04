@@ -6,7 +6,7 @@ import Posts from "../components/Posts";
 export default function Timeline(){
     return (
         <>
-            <NavBar></NavBar>
+            <NavBar/>
             <TimelineContainer>
                 <h1>timeline</h1>
                 <NewPost></NewPost>
@@ -18,7 +18,6 @@ export default function Timeline(){
 
 const TimelineContainer = styled.div`
     margin: 125px 250px;
-
     h1 {
         font-family: 'Oswald', sans-serif;
         font-size: 43px;
