@@ -4,13 +4,21 @@ import userphoto from "../assets/images/user.png"
 import { useState } from "react"
 
 export default function NewPost(){
+    const [url, setUrl] = useState(undefined)
+    const [text, setText] = useState("")
     const [loading, setLoading] = useState(false)
 
     function publishPost(e) {
         e.preventDefault();
         setLoading(true)
 
-        axios.post()
+        const body = {
+            url,
+            text,
+            username
+        }
+
+        axios.post(URL, body)
             .then()
             .catch()
     }
@@ -26,13 +34,23 @@ export default function NewPost(){
                 <h2>What are you going to share today?</h2>
                 <Form onSubmit={publishPost}>
                     <input
+                        name="url"
+                        type="url"
+                        value={url}
+                        required
                         placeholder="http://..."
+                        onChange={u => setUrl(u.target.value)}
+                        disabled={loading? true : false}
                     ></input>
                     <textarea
                         rows="5"
                         placeholder="Awesome article about #javascript"
+                        onChange={t => setText(t.target.value)}
+                        disabled={loading? true : false}
                     ></textarea>
-                    <button type="submit">
+                    <button 
+                        type="submit"
+                        disabled={loading? true : false}>
                        {loading ? <p>Publishing</p> : <p>Publish</p>} 
                     </button>
                 </Form>
