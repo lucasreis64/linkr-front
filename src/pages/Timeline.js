@@ -8,7 +8,7 @@ export default function Timeline(){
         <>
             <NavBar></NavBar>
             <TimelineContainer>
-                <h1>timeline</h1>
+                <h1 className="title">timeline</h1>
                 <NewPost></NewPost>
                 <Posts></Posts>
             </TimelineContainer>
@@ -19,7 +19,7 @@ export default function Timeline(){
 const TimelineContainer = styled.div`
     margin: 125px 250px;
 
-    h1 {
+    .title {
         font-family: 'Oswald', sans-serif;
         font-size: 43px;
         color: white;

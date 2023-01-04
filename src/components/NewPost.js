@@ -15,7 +15,6 @@ export default function NewPost(){
         const body = {
             url,
             text,
-            username
         }
 
         axios.post(URL, body)
@@ -23,15 +22,14 @@ export default function NewPost(){
             .catch()
     }
 
-
     return(
         <>
         <NewPostContainer>
             <div>
-                <img src={userphoto} alt="user"/>
+                <img className="userphoto" src={userphoto} alt="user"/>
             </div>
             <div>
-                <h2>What are you going to share today?</h2>
+                <h2 className="question">What are you going to share today?</h2>
                 <Form onSubmit={publishPost}>
                     <input
                         name="url"
@@ -71,7 +69,7 @@ const NewPostContainer = styled.div`
     position: relative;
     box-sizing: border-box;
 
-    h2 {
+    .question {
         font-family: 'Lato', sans-serif;
         font-size: 20px;
         color: #707070;
@@ -79,7 +77,7 @@ const NewPostContainer = styled.div`
         margin-top: 8px;
     }
 
-    img {
+    .userphoto {
         margin-right: 15px;
     }
 `

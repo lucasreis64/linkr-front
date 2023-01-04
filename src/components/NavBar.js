@@ -6,7 +6,7 @@ export default function NavBar(){
     return (
         <NavContainer>
             <img src={logo} alt="logo"/>
-            <div>
+            <div className="user-area">
                 <ion-icon name="chevron-down-outline"></ion-icon>
                 <img src={userphoto} alt="user"/>
             </div>
@@ -32,7 +32,7 @@ const NavContainer = styled.div`
         color: white;
     }
 
-    div {
+    .user-area {
         width: 100px;
         display: flex;
         align-items: center;
