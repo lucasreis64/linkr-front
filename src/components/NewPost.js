@@ -7,14 +7,19 @@ export default function NewPost(){
         <NewPostContainer>
             <div>
                 <img src={userphoto} alt="user"/>
+            </div>
+            <div>
                 <h1>What are you going to share today?</h1>
                 <Form>
-                    <input></input>
-                    <input></input>
+                    <input
+                        placeholder="http://..."
+                    ></input>
+                    <input
+                        placeholder="Awesome article about #javascript"
+                    ></input>
                     <button>Publish</button>
                 </Form>
             </div>
-            <div></div>
         </NewPostContainer>
         </>
     )
@@ -25,7 +30,10 @@ const NewPostContainer = styled.div`
     height: 209px;
     border-radius: 16px;
     background-color: white;
-    position: absolute;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
 
     h1 {
         font-family: 'Lato', sans-serif;
@@ -38,21 +46,30 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 20px;
 
     input {
         width: 503px;
+        height: 30px;
         background-color: #EFEFEF;
         border-radius: 5px;
+        border-style: none;
+	    padding: 0 12px;
+	    font-family: 'Lato';
+	    font-size: 15px;
+        font-weight: 300;
     }
 
-    button{
+    button {
         width: 112px;
         height: 31px;
         border-radius: 5px;
+        border-style: none;
         background-color: #1877F2;
         color: white;
-        position: fixed;
-        bottom: 0;
-        right: 0;
+        font-weight: 700;
+        position: absolute;
+        bottom: 20px;
+        right: 25px;
     }
 `
