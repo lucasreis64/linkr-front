@@ -1,12 +1,39 @@
 import styled from "styled-components"
 import logo from "../assets/images/logo.svg"
 import userphoto from "../assets/images/user.png"
+import {DebounceInput} from 'react-debounce-input';
+import { useState } from "react";
+import Suggestion from "./Suggestion";
 
 export default function NavBar(){
+
+    const [search, setSearch] = useState("");
+    const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
+    const [suggestions, setSuggestions] = useState([{image: userphoto, username: "João Avatares"}])
+    
+    function handleChange(e) {
+        setSearch(e.target.value);
+    }
+    function handleBlur(event) {
+        setTimeout(() => setSuggestionsDisplay('none'), 180);
+    }
+
     return (
-        <NavContainer>
+        <NavContainer suggestionsDisplay={suggestionsDisplay}>
             <img src={logo} alt="logo"/>
-            <div>
+            <div className="search-container"
+            onFocus={() => setSuggestionsDisplay("block")}
+            onBlur={handleBlur}
+            >
+                <DebounceInput minLenght={3} debounceTimeout={300} 
+                onChange={handleChange}
+                placeholder="Search for people"
+                value={search}/>
+                <div className="suggestions">
+                    {suggestions.map((value, index) => <Suggestion data={value} key={index} last={index === suggestions.length - 1}/>)}
+                </div>
+            </div>
+            <div className="profile-picture">
                 <ion-icon name="chevron-down-outline"></ion-icon>
                 <img src={userphoto} alt="user"/>
             </div>
@@ -15,7 +42,28 @@ export default function NavBar(){
 }
 
 const NavContainer = styled.div`
-    width: 100vw;
+    @-webkit-keyframes slide-top {
+    0% {
+        -webkit-transform: translateY(0);
+                transform: translateY(0);
+    }
+    100% {
+        -webkit-transform: translateY(-37px);
+                transform: translateY(-37px);
+    }
+    }
+    @keyframes slide-top {
+    0% {
+        -webkit-transform: translateY(0);
+                transform: translateY(0);
+    }
+    100% {
+        -webkit-transform: translateY(-37px);
+                transform: translateY(-37px);
+    }
+    }
+
+    width: 100%;
     height: 72px;
     display: flex;
     align-items: center;
@@ -23,16 +71,53 @@ const NavContainer = styled.div`
     box-sizing: border-box;
     background-color: #151515;
     padding: 0 20px;
-    position: fixed;
+    position: absolute;
     top: 0;
-
+    .search-container {
+        max-width: 563px;
+        width: 100%;
+        position: relative;
+        .suggestions {
+            display: ${props => props.suggestionsDisplay};
+            max-width: 563px;
+            min-height: 60px;
+            width: 100%;
+            position: fixed;
+            top: 53px;
+            z-index : 1;
+            border-radius: 8px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            width: 100%;
+            padding: 17px;
+            background-color: #E7E7E7;
+            -webkit-animation: slide-top 0.5s ease-in reverse both;
+	        animation: slide-top 0.5s ease-in reverse both;
+        }
+    }
+    input {
+        width: 100%;
+        height: 45px;
+        padding: 17px;
+        border-radius: 8px;
+        z-index: 2;
+        position: relative;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;  
+        border: 0px;
+        outline: none;
+    }
+    
     ion-icon {
         width: 25px;
         height: 25px;
         color: white;
     }
 
-    div {
+    .profile-picture {
         width: 100px;
         display: flex;
         align-items: center;
