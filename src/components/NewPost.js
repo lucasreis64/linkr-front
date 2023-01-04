@@ -1,7 +1,21 @@
 import styled from "styled-components"
+import axios from 'axios'
 import userphoto from "../assets/images/user.png"
+import { useState } from "react"
 
 export default function NewPost(){
+    const [loading, setLoading] = useState(false)
+
+    function publishPost(e) {
+        e.preventDefault();
+        setLoading(true)
+
+        axios.post()
+            .then()
+            .catch()
+    }
+
+
     return(
         <>
         <NewPostContainer>
@@ -10,17 +24,17 @@ export default function NewPost(){
             </div>
             <div>
                 <h2>What are you going to share today?</h2>
-                <Form>
+                <Form onSubmit={publishPost}>
                     <input
-                        className="small"
                         placeholder="http://..."
                     ></input>
                     <textarea
-                        className="big"
                         rows="5"
                         placeholder="Awesome article about #javascript"
                     ></textarea>
-                    <button>Publish</button>
+                    <button type="submit">
+                       {loading ? <p>Publishing</p> : <p>Publish</p>} 
+                    </button>
                 </Form>
             </div>
         </NewPostContainer>
