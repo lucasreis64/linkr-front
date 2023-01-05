@@ -54,43 +54,45 @@ export default function SignIn(params) {
                     the best links on the web
                 </h2>
             </div>
-            <form action="/hoje" onSubmit={handleSubmit}>
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                {loading ? (
-                    <button>{carregamento}</button>
-                ) : (
-                    <button type="submit">Entrar</button>
-                )}
-                <label>
-                    Permanecer conectado?
+            <div className="formulary">
+                <form action="/hoje" onSubmit={handleSubmit}>
                     <input
-                        className="check"
-                        type="checkbox"
-                        checked={permanecerConectado}
-                        onChange={() =>
-                            setPermanecerConectado(!permanecerConectado)
-                        }
+                        name="email"
+                        type="email"
+                        placeholder="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
-                </label>
-            </form>
-            <Link to="/sign-up">
-                <p>First time? Create an account!</p>
-            </Link>
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    {loading ? (
+                        <button>{carregamento}</button>
+                    ) : (
+                        <button type="submit">Entrar</button>
+                    )}
+                    <label>
+                        Permanecer conectado?
+                        <input
+                            className="check"
+                            type="checkbox"
+                            checked={permanecerConectado}
+                            onChange={() =>
+                                setPermanecerConectado(!permanecerConectado)
+                            }
+                        />
+                    </label>
+                </form>
+                <Link to="/sign-up">
+                    <p>First time? Create an account!</p>
+                </Link>
+            </div>
         </LoginContainer>
     );
 }

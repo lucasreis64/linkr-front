@@ -43,7 +43,14 @@ export const LoginContainer = styled.div`
 			font-size: 23px;
 		}
 	}
-	
+	.formulary{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		gap: 10px;
+		margin-bottom: 20px;
+	}
 	form {
 		display: flex;
 		flex-direction: column;
@@ -109,4 +116,27 @@ export const LoginContainer = styled.div`
 		animation: ${deslizarCima} ${tempo};
 		filter: drop-shadow(0px 6px 5px black);
 	}
+	@media (min-width: 600px) {
+	display: flex;
+	flex-direction: row;
+	.formulary{
+		width: 535px;
+		height: 100%;
+		justify-content: center;
+	}
+	.logo{
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding-left: 10%;
+		align-items: flex-start;
+		justify-content: center;
+		h1{
+			font-size: 106px;
+		}
+		h2{
+			font-size: 43px;
+		}
+	}
+}
 `;
