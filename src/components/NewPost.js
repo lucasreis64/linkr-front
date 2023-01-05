@@ -2,8 +2,8 @@ import styled from "styled-components"
 import axios from 'axios'
 import userphoto from "../assets/images/user.png"
 import { useState, useContext } from "react"
-import { contexto } from "../../context/userContext"
-import { URLS } from "../../assets/constants/constants";
+import { contexto } from "../context/userContext"
+import { URLS } from "../assets/constants/constants";
 
 export default function NewPost(){
     const [loading, setLoading] = useState(false)
@@ -30,10 +30,10 @@ export default function NewPost(){
     return(
         <>
         <NewPostContainer>
-            <div>
-                <img src={userphoto} alt="user"/>
+            <div className="left">
+                <img className="profile-picture" src={userphoto} alt="user"/>
             </div>
-            <div>
+            <div className="right">
                 <h2>What are you going to share today?</h2>
                 <Form onSubmit={publishPost}>
                     <input
@@ -71,7 +71,6 @@ const NewPostContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     position: relative;
-    box-sizing: border-box;
 
     h2 {
         font-family: 'Lato', sans-serif;
@@ -81,17 +80,45 @@ const NewPostContainer = styled.div`
         margin-top: 8px;
     }
 
-    img {
+    .profile-picture {
         margin-right: 15px;
+        display: inline;
+    }
+
+    .right{
+        width:100%;
+    }
+
+    @media screen and (max-width: 600px) {
+        max-width: 100%;
+        border-radius: 0;
+
+        .profile-picture {
+            display: none;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            margin: 10px auto;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        max-width: 100%;
     }
 `
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin-top: 10px;
+    max-width: 500px;
 
     input, textarea {
+        width:100%;
+        max-width: 500px;
         background-color: #EFEFEF;
         border-radius: 5px;
         border-style: none;
@@ -100,16 +127,13 @@ const Form = styled.form`
 	    font-size: 15px;
         font-weight: 300;
         margin-bottom: 5px;
-        box-sizing: border-box;
     }
 
     input {
-        width: 500px;
         height: 30px;
     }
 
     textarea {
-        width: 500px;
         height: 70px;
         padding-top: 5px;
     }
