@@ -88,6 +88,7 @@ export default function SignUp() {
                     the best links on the web
                 </h2>
             </div>
+            <div className="formulary">
             <form action="/hoje" onSubmit={handleSubmit}>
                 <input
                     name="email"
@@ -130,6 +131,7 @@ export default function SignUp() {
             <Link to="/">
                 <p>Switch back to log in</p>
             </Link>
+            </div>
         </CadastroContainer>
     );
 }
