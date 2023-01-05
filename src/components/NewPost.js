@@ -1,24 +1,24 @@
 import styled from "styled-components"
 import axios from 'axios'
 import userphoto from "../assets/images/user.png"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { contexto } from "../../context/userContext"
+import { URLS } from "../../assets/constants/constants";
 
 export default function NewPost(){
     const [loading, setLoading] = useState(false)
     const [url, setUrl] = useState(undefined)
     const [text, setText] = useState("")
+    const { token } = useContext(contexto)
 
     function publishPost(e) {
         e.preventDefault();
         setLoading(true)
 
-        const URL = 'HASDHJD'
-        const body = {
-            url,
-            text
-        }
-
-        axios.post(URL, body)
+        axios.post(URLS.TIMELINE, {
+                link: url,
+                description: text,
+                token})
             .then((res) => {
                 setLoading(false)
             })
