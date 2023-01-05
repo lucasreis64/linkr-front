@@ -4,20 +4,20 @@ import { getTrendings } from "../service/api";
 import { Link } from "react-router-dom";
 
 export default function Trending(){
-    const [trends, setTrends] = useState(["berinjelaAwards","pessegoAwards","cirogomesnalua","seila","seila","seila","seila","seila","seila","seila"]);
+    const [trends, setTrends] = useState([]);
 
     //const token = localStorage.getItem("token");
     
     useEffect(() => {
         let isApiSubscribed = true;
     
-        /*getTrendings(token).then((res) => {
+        getTrendings().then((res) => {
           if(isApiSubscribed) 
           {
             setTrends(res.data);
             
           }
-        });*/
+        });
 
         return () => 
         {
@@ -31,7 +31,7 @@ export default function Trending(){
             <Topo>
                 <h1>trending</h1>
             </Topo>
-           {trends.map((trend, index) => <Link key={index} to={`/hashtag/:${trend}`}><li># {trend}</li></Link>)}
+           {trends.map((trend, index) => <Link key={index} to={`/hashtag/:${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
         </TrendContainer>
         </>
     )

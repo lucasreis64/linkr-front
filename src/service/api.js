@@ -6,10 +6,8 @@ const headerCreator = (token) => {
 };
 
 export function getTrendings(){
-    /*const requisition = axios.get(
-        `${URL}/trendings`,
-        headerCreator(token)
-    );*/
-    const requisition = ["berinjelaAwards","pessegoAwards","cirogomesnalua","seila"];
+    const requisition = axios.get(
+        `${URL}/trendings`);
+
     return requisition;
 }
