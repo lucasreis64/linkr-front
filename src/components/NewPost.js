@@ -5,16 +5,27 @@ import { useState } from "react"
 
 export default function NewPost(){
     const [loading, setLoading] = useState(false)
+    const [url, setUrl] = useState(undefined)
+    const [text, setText] = useState("")
 
     function publishPost(e) {
         e.preventDefault();
         setLoading(true)
 
-        axios.post()
-            .then()
-            .catch()
-    }
+        const URL = 'HASDHJD'
+        const body = {
+            url,
+            text
+        }
 
+        axios.post(URL, body)
+            .then((res) => {
+                setLoading(false)
+            })
+            .catch((err) => { 
+                alert(`Houve um erro ao publicar seu link! \n${err.response.data.message}`)
+                setLoading(false)})
+    }
 
     return(
         <>
@@ -26,13 +37,22 @@ export default function NewPost(){
                 <h2>What are you going to share today?</h2>
                 <Form onSubmit={publishPost}>
                     <input
+                        name="url"
+                        type="url"
+                        value={url}
+                        required
                         placeholder="http://..."
+                        onChange={(u) => setUrl(u.target.value)}
+                        disabled={loading? true : false}
                     ></input>
                     <textarea
                         rows="5"
+                        value={text}
                         placeholder="Awesome article about #javascript"
+                        onChange={(t) => setText(t.target.value)}
+                        disabled={loading? true : false}
                     ></textarea>
-                    <button type="submit">
+                    <button type="submit" disabled={loading? true : false}>
                        {loading ? <p>Publishing</p> : <p>Publish</p>} 
                     </button>
                 </Form>
@@ -105,5 +125,11 @@ const Form = styled.form`
         position: absolute;
         bottom: 14px;
         right: 20px;
+    }
+
+    button:disabled, button[disabled]{
+        opacity:1;
+        background-color: #cccccc;
+        cursor: not-allowed;  
     }
 `
