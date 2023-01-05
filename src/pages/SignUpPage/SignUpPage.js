@@ -45,7 +45,7 @@ export default function SignUp() {
                 Swal.fire({
                     icon: "error",
                     title: "Conflito!",
-                    text: response.message,
+                    text: response.data,
                     footer: "Tente novamente!",
                 });
 				setLoading(false);
@@ -53,7 +53,7 @@ export default function SignUp() {
                 Swal.fire({
                     icon: "error",
                     title: "Erro!",
-                    text: response.errors,
+                    text: response.data,
                     footer: "Tente novamente!",
                 });
 				setLoading(false);
