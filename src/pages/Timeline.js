@@ -7,12 +7,18 @@ import Trending from "../components/Trending";
 export default function Timeline(){
     return (
         <>
+<<<<<<< HEAD
             <NavBar></NavBar>
             <Body>     
             <T><h1>timeline</h1></T>  
             <Box>
             <TimelineContainer> 
                 
+=======
+            <NavBar/>
+            <TimelineContainer>
+                <h1>timeline</h1>
+>>>>>>> cf15575a9a8399a67c2b9048b9095216d2b7e280
                 <NewPost></NewPost>
                 <Posts></Posts>
             </TimelineContainer>
@@ -23,6 +29,7 @@ export default function Timeline(){
     )
 }
 
+<<<<<<< HEAD
 const Box = styled.div`
 	display: flex;
     position: absolute;
@@ -56,3 +63,15 @@ const T = styled.div`
     font-weight: 700;
    
 `;
+=======
+const TimelineContainer = styled.div`
+    margin: 125px 250px;
+    h1 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 43px;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 45px;
+    }
+`
+>>>>>>> cf15575a9a8399a67c2b9048b9095216d2b7e280
