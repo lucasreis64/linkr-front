@@ -20,7 +20,7 @@ export default function NavBar(){
 
     return (
         <NavContainer suggestionsDisplay={suggestionsDisplay}>
-            <img src={logo} alt="logo"/>
+            <img className="logo" src={logo} alt="logo"/>
             <div className="search-container"
             onFocus={() => setSuggestionsDisplay("block")}
             onBlur={handleBlur}
@@ -63,7 +63,7 @@ const NavContainer = styled.div`
     }
     }
 
-    width: 100%;
+    width: 100vw;
     height: 72px;
     display: flex;
     align-items: center;
@@ -95,6 +95,7 @@ const NavContainer = styled.div`
 	        animation: slide-top 0.5s ease-in reverse both;
         }
     }
+
     input {
         width: 100%;
         height: 45px;
@@ -109,6 +110,12 @@ const NavContainer = styled.div`
         line-height: 23px;  
         border: 0px;
         outline: none;
+    }
+
+    .logo {
+        width: 100%;
+        max-width: 100px;
+        margin-right: 10px;
     }
     
     ion-icon {
