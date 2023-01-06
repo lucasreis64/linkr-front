@@ -4,17 +4,26 @@ import userphoto from "../assets/images/user.png"
 import {DebounceInput} from 'react-debounce-input';
 import { useState } from "react";
 import Suggestion from "./Suggestion";
+import axios from "axios";
+import { API_BASE_URL } from "../assets/constants/constants";
 
 export default function NavBar(){
 
     const [search, setSearch] = useState("");
     const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
-    const [suggestions, setSuggestions] = useState([{image: userphoto, username: "João Avatares"}])
+    const [suggestions, setSuggestions] = useState([])
     
     function handleChange(e) {
-        setSearch(e.target.value);
+        const new_search = e.target.value;
+        setSearch(new_search);
+        if(new_search.length < 3)
+            return;
+        axios.get(API_BASE_URL + `/search?name=${new_search}`)
+        .then(response => {setSuggestions(response.data)})
+        .catch(e => console.log(e))
+        return;
     }
-    function handleBlur(event) {
+    function handleBlur() {
         setTimeout(() => setSuggestionsDisplay('none'), 180);
     }
 
@@ -25,7 +34,7 @@ export default function NavBar(){
             onFocus={() => setSuggestionsDisplay("block")}
             onBlur={handleBlur}
             >
-                <DebounceInput minLenght={3} debounceTimeout={300} 
+                <DebounceInput debounceTimeout={300} 
                 onChange={handleChange}
                 placeholder="Search for people"
                 value={search}/>
