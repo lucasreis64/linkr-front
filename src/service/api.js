@@ -15,7 +15,7 @@ export function getTrendings(){
 export function getTimeline(token){
     const requisition = axios.get(
         `${URL}/timeline`, 
-        {headers: {Authorization: `Bearer ${token}`}},
+        headerCreator(token),
         );
 
     return requisition;

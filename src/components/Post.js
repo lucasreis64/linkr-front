@@ -3,16 +3,15 @@ import { useState, useContext } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash, FaHandPointer} from "react-icons/fa";
 
-export default function Post({data}){
+export default function Post({data, user}){
 
-    const [form, setForm] = useState({});
-    const [isLiked, setIsLiked] = useState(false);
-    const [isEditable, setIsEditable] = useState(true);
+    const [form, setForm] = useState({description: data.description});
+    const [isLiked, setIsLiked] = useState(data.likes_users.includes(user.username));
+    const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
 
     function handleForm({value, name}){
         setForm({
-            ...form,
             [name]: value
         });
     }
@@ -20,8 +19,7 @@ export default function Post({data}){
     function handleSendForm(e){
         e.preventDefault();
         setIsEditing(false);
-        console.log(form)
-        //UPDATE DO POST COM OBJETO FORM
+        //UPDATE DO POST COM OBJETO FORM.description
 
     }
 
@@ -53,19 +51,20 @@ export default function Post({data}){
                     </div>
                 </div>
                 <Form onSubmit={handleSendForm}>
-                    <Input
+                    {isEditing ? (
+                        <Input
                         name="description"
                         type="text"
-                        value={data.description}
+                        value={form?.description}
                         required
                         onChange={(e) => handleForm({
-                            name: e.target.value,
+                            name: e.target.name,
                             value: e.target.value
                         })}
-                        isEditable={isEditing}
-                        disabled
-                    ></Input>
-
+                    />
+                    ):(
+                        <Text>{data.description}</Text>
+                    )}
                     <button type="submit" className="hidden"></button>
                 </Form>
                 <div className="link-container">{data.link}</div>
@@ -178,11 +177,17 @@ const Input = styled.input`
     font-weight: 300;
     margin-bottom: 5px;
 
-    :disabled{
-        border: none;
-        background: none;
-        color: #B7B7B7;
-        font-size: 17px;
-        line-height: 20px;
-    }
+    
+`
+
+const Text = styled.div`
+    width:100%;
+    height: fit-content;
+    min-height: 44px;
+    border-radius: 5px;
+    border-style: none;
+	color: #B7B7B7;
+    font-size: 17px;
+    line-height: 20px;
+    margin-bottom: 5px;
 `
