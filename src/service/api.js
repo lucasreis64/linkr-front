@@ -11,3 +11,14 @@ export function getTrendings(){
 
     return requisition;
 }
+
+export function getTimeline(token){
+    const requisition = axios.get(
+        `${URL}/timeline`, 
+        {headers: {Authorization: `Bearer ${token}`}},
+        );
+
+    return requisition;
+}
+
+
