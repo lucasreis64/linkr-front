@@ -23,7 +23,7 @@ export default function Posts(){
     return(
         <>
             <PostsContainer>
-                {posts.length > 0 ? (
+                {posts && posts.length > 0 ? (
                     posts.map(p => <Post key={p.id} data={p} user={userData}/>)
                 ): (
                     <div>loading...</div>

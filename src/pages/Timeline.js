@@ -13,8 +13,7 @@ export default function Timeline(){
             <Body>     
             <T><h1>timeline</h1></T>  
             <Box>
-            <TimelineContainer> 
-                
+            <TimelineContainer>                 
                 <NewPost></NewPost>
                 <Posts></Posts>
             </TimelineContainer>

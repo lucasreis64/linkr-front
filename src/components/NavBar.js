@@ -5,8 +5,8 @@ import userphoto from "../assets/images/user.png"
 import {DebounceInput} from 'react-debounce-input';
 import { useState } from "react";
 import Suggestion from "./Suggestion";
-import axios from "axios";
-import { API_BASE_URL } from "../assets/constants/constants";
+    import axios from "axios";
+    import { API_BASE_URL } from "../assets/constants/constants";
 
 export default function NavBar(){
 
@@ -158,7 +158,7 @@ const NavContainer = styled.div`
     }
     }
 
-    width: 100%;
+    width: 100vw;
     height: 72px;
     position: fixed;
     display: flex;
