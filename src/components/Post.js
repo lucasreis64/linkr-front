@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { useState, useContext } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash, FaHandPointer} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function Post({data}){
 
+    const navigate = useNavigate();
     const [form, setForm] = useState({});
     const [isLiked, setIsLiked] = useState(false);
     const [isEditable, setIsEditable] = useState(true);
@@ -34,7 +36,7 @@ export default function Post({data}){
         <>
         <PostContainer>
             <div className="left">
-                <img className="profile-picture" src={data.profile_picture} alt="user"/>
+                <img className="profile-picture" src={data.profile_picture} alt="user" onClick={() => navigate("users/" + data.id)}/>
                 <div className="like-actions">
                     {isLiked ? (
                         <FaHeart cursor={"pointer"} color="red" onClick={() => tapLike()}/>

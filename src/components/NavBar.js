@@ -136,6 +136,7 @@ const SearchContainer = styled.div`
 `
 
 const NavContainer = styled.div`
+    z-index: 1;
     @-webkit-keyframes slide-top {
     0% {
         -webkit-transform: translateY(0);
