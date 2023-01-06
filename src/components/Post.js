@@ -19,8 +19,7 @@ export default function Post({data, user}){
     function handleSendForm(e){
         e.preventDefault();
         setIsEditing(false);
-        console.log(form.description)
-        //UPDATE DO POST COM OBJETO FORM
+        //UPDATE DO POST COM OBJETO FORM.description
 
     }
 
