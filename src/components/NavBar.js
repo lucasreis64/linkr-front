@@ -11,14 +11,17 @@ export default function NavBar(){
 
     const [search, setSearch] = useState("");
     const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
-    const [suggestions, setSuggestions] = useState([{image: userphoto, username: "João Avatares"}])
+    const [suggestions, setSuggestions] = useState([])
     
     function handleChange(e) {
         const new_search = e.target.value;
         setSearch(new_search);
+        if(new_search.length < 3)
+            return;
         axios.get(API_BASE_URL + `/search?name=${new_search}`)
-        .then(response => setSuggestions(response))
-        .catch(e => console.log(e));
+        .then(response => {setSuggestions(response.data)})
+        .catch(e => console.log(e))
+        return;
     }
     function handleBlur() {
         setTimeout(() => setSuggestionsDisplay('none'), 180);
@@ -26,12 +29,12 @@ export default function NavBar(){
 
     return (
         <NavContainer suggestionsDisplay={suggestionsDisplay}>
-            <img src={logo} alt="logo"/>
+            <img className="logo" src={logo} alt="logo"/>
             <div className="search-container"
             onFocus={() => setSuggestionsDisplay("block")}
             onBlur={handleBlur}
             >
-                <DebounceInput minLenght={3} debounceTimeout={300} 
+                <DebounceInput debounceTimeout={300} 
                 onChange={handleChange}
                 placeholder="Search for people"
                 value={search}/>
@@ -69,7 +72,7 @@ const NavContainer = styled.div`
     }
     }
 
-    width: 100%;
+    width: 100vw;
     height: 72px;
     display: flex;
     align-items: center;
@@ -101,6 +104,7 @@ const NavContainer = styled.div`
 	        animation: slide-top 0.5s ease-in reverse both;
         }
     }
+
     input {
         width: 100%;
         height: 45px;
@@ -115,6 +119,12 @@ const NavContainer = styled.div`
         line-height: 23px;  
         border: 0px;
         outline: none;
+    }
+
+    .logo {
+        width: 100%;
+        max-width: 100px;
+        margin-right: 10px;
     }
     
     ion-icon {

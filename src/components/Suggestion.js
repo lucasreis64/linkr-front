@@ -8,7 +8,7 @@ export default function Suggestion({data, last}) {
     }
 
     return (
-    <StyledSuggestion onClick={handleClick} last={last} img={data.image}>
+    <StyledSuggestion onClick={handleClick} last={last} img={data.profile_picture}>
         <div/>
         <h1>{data.username}</h1>
     </StyledSuggestion>
