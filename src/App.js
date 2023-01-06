@@ -4,6 +4,7 @@ import HashtagPage from "./pages/HashtagPage";
 import SignIn from "./pages/SignInPage/SignInPage";
 import SignUp from "./pages/SignUpPage/SignUpPage";
 import Timeline from "./pages/Timeline";
+import UserPage from "./pages/UserPage/UserPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<SignIn/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>
+        <Route path="/users/:id" element={<UserPage/>}/>
         <Route path='/timeline' element={<Timeline />}/>
         <Route path='/hashtag/:hashtag' element={<HashtagPage />}/>
       </Routes>
