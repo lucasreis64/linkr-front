@@ -4,6 +4,8 @@ import userphoto from "../assets/images/user.png"
 import {DebounceInput} from 'react-debounce-input';
 import { useState } from "react";
 import Suggestion from "./Suggestion";
+import axios from "axios";
+import { API_BASE_URL } from "../assets/constants/constants";
 
 export default function NavBar(){
 
@@ -12,9 +14,13 @@ export default function NavBar(){
     const [suggestions, setSuggestions] = useState([{image: userphoto, username: "João Avatares"}])
     
     function handleChange(e) {
-        setSearch(e.target.value);
+        const new_search = e.target.value;
+        setSearch(new_search);
+        axios.get(API_BASE_URL + `/search?name=${new_search}`)
+        .then(response => setSuggestions(response))
+        .catch(e => console.log(e));
     }
-    function handleBlur(event) {
+    function handleBlur() {
         setTimeout(() => setSuggestionsDisplay('none'), 180);
     }
 
