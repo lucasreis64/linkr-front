@@ -18,7 +18,7 @@ export default function NewPost(){
         axios.post(URLS.TIMELINE, {
                 link: url,
                 description: text,
-                token})
+                token: token.token})
             .then((res) => {
                 setLoading(false)
             })

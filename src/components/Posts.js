@@ -7,12 +7,14 @@ import { getTimeline } from "../service/api";
 export default function Posts(){
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [userData, setUserData] = useState({});
     const { token } = useContext(contexto);
 
     useEffect(() => {
         getTimeline(token.token)
         .then((res)=> {
-            setPosts(res.data)
+            setPosts(res.data.data);
+            setUserData(res.data.loggedUser);
         })
         .catch()
     }, []);
@@ -22,7 +24,7 @@ export default function Posts(){
         <>
             <PostsContainer>
                 {posts.length > 0 ? (
-                    posts.map(p => <Post key={p.id} data={p}/>)
+                    posts.map(p => <Post key={p.id} data={p} user={userData}/>)
                 ): (
                     <div>loading...</div>
                 )}
