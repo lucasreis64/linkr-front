@@ -2,17 +2,26 @@ import styled from "styled-components"
 import logo from "../assets/images/logo.svg"
 import lupa from "../assets/images/lupa.svg"
 import userphoto from "../assets/images/user.png"
+import down from "../assets/images/down.png"
+import up from "../assets/images/up.png"
 import {DebounceInput} from 'react-debounce-input';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Suggestion from "./Suggestion";
     import axios from "axios";
     import { API_BASE_URL } from "../assets/constants/constants";
+import { FallingLines } from "react-loader-spinner"
+import { useNavigate } from "react-router-dom"
+import { contexto } from "../context/userContext"
+import { slideTop } from "../assets/animations/animations"
 
 export default function NavBar(){
 
     const [search, setSearch] = useState("");
     const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
     const [suggestions, setSuggestions] = useState([])
+    const [logoutMenu, setLogoutMenu] = useState(false)
+    const {setToken} = useContext(contexto)
+    const navigate = useNavigate()
     
     function handleChange(e) {
         const new_search = e.target.value;
@@ -26,6 +35,10 @@ export default function NavBar(){
     }
     function handleBlur() {
         setTimeout(() => setSuggestionsDisplay('none'), 180);
+    }
+
+    function handleLogout () {
+        setLogoutMenu(!logoutMenu);
     }
 
     return (
@@ -46,10 +59,11 @@ export default function NavBar(){
                 </div>
                 <ion-icon name="search-outline"></ion-icon>            
             </SearchContainer>
-            <div className="profile-picture">
-                <ion-icon name="chevron-down-outline"></ion-icon>
+            <UserContainer>
+                {logoutMenu?<img onClick={handleLogout} className="arrow" src={up} alt="arrow"/>:<img onClick={handleLogout} className="arrow" src={down} alt="arrow"/>}
                 <img src={userphoto} alt="user"/>
-            </div>
+                {logoutMenu?<div className="logout-menu"><button onClick={()=><>{localStorage.clear()};{setToken({})};{navigate('/')}</>}>Logout</button></div>:true}
+            </UserContainer>
         </NavContainer>
         <FakeNavBar/>
         <SearchContainer origin={"mobile"}
@@ -69,6 +83,40 @@ export default function NavBar(){
         </>        
     )
 }
+
+const UserContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    .logout-menu{
+        animation: ${slideTop} 500ms;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 72px;
+        right: 0px;
+        width: 150px;
+        height: 47px;
+        background-color: black;
+        z-index: 3;
+        border-bottom-left-radius: 20px;
+        button{
+            animation: ${slideTop} 500ms;
+            font-size: 15px;
+            border: none;
+            background-color: inherit;
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 700;
+            color: white;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+    }
+`
 
 const SearchContainer = styled.div`
     max-width: 563px;

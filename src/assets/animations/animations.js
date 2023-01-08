@@ -172,3 +172,14 @@ export const quicarDentro = keyframes`
             transform: scale3d(1, 1, 1);
         }
     `;
+
+export const slideTop = keyframes`
+    0% {
+        height: 0px;
+        font-size: 0px;
+    }
+    100% {
+        height: 47px;
+        font-size: 15px;
+    }
+    `;
