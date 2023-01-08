@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash } from "react-icons/fa";
-
-import { Link } from "react-router-dom";
+import { Parser } from "simple-text-parser";
+import { Link, useNavigate } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 
 
@@ -16,7 +16,18 @@ export default function Post({ data, user }) {
     const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
     const {token} = useContext(contexto);
+    const navigate = useNavigate();
 
+    const parser = new Parser();
+    parser.addRule(/\#[\S]+/gi, function (tag) {
+        return `<span className="tag" 
+                onClick={() => navigate('/hashtag/${tag.substring(1)}')}>
+                ${tag}
+                </span>`;
+        });
+
+    const description = parser.render(data.description)
+    console.log(description)
 
     function handleForm({ value, name }) {
         setForm({
@@ -53,7 +64,6 @@ export default function Post({ data, user }) {
         }
     }
 
-
     return (
         <>
             <PostContainer>
@@ -89,7 +99,7 @@ export default function Post({ data, user }) {
                                 })}
                             />
                         ) : (
-                            <Text>{data.description}</Text>
+                            <Text>{description}</Text>
                         )}
                         <button type="submit" className="hidden"></button>
                     </Form>
@@ -282,8 +292,6 @@ const Input = styled.input`
 	font-family: 'Lato';
 	font-size: 15px;
     font-weight: 300;
-
-    
 `
 
 const Text = styled.div`
@@ -295,7 +303,10 @@ const Text = styled.div`
 	color: #B7B7B7;
     font-size: 17px;
     line-height: 20px;
-    
+
+    .tag {
+        font-weight: bold;
+    }
 `
 
 const Image = styled.div`
