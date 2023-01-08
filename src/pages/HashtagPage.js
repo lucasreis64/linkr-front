@@ -1,17 +1,36 @@
+import axios from "axios";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import Posts from "../components/Posts";
+import Post from "../components/Post";
 import Trending from "../components/Trending";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { URLS } from "../assets/constants/constants";
 
 export default function HashtagPage(){
+    const { hashtag } = useParams();
+    const [hashtagPosts, setHashtagPosts] = useState([])
+
+    useEffect(() => {
+        axios.get(URLS.HASHTAG + hashtag)
+        .then(response => setHashtagPosts(response.data))
+        .catch(e => console.log(e));
+    })
+
     return (
         <>
             <NavBar></NavBar>
             <Body>     
-            <T><h1>hashtag</h1></T>  
+            <T><h1>hashtagPosts</h1></T>  
             <Box>
             <TimelineContainer> 
-                <Posts></Posts>
+                <PostsContainer>
+                    {hashtagPosts && hashtagPosts.length > 0 ?  (
+                        hashtagPosts.map(p => <Post key={p.id} data={p} user={p.userData}/>)
+                    ): (
+                        <div>Loading...</div>
+                    )}
+                </PostsContainer>
             </TimelineContainer>
             <Trending/>
             </Box>
@@ -52,4 +71,22 @@ const T = styled.div`
     color: white;
     font-weight: 700;
    
+`
+
+const PostsContainer = styled.div`
+    width: 611px;
+    margin-top: 29px;
+
+    :last-child{
+        margin-bottom: 50px;
+    }
+
+    @media screen and (max-width: 600px) {
+        max-width: 100vw;
+
+    }
+
+    @media screen and (max-width: 768px) {
+        max-width: 100vw;
+    }
 `;

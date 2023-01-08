@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import NewPost from "../components/NewPost";

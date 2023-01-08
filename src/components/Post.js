@@ -6,9 +6,8 @@ import { Parser } from "simple-text-parser";
 import { Link, useNavigate } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 
-
 export default function Post({ data, user }) {
-
+    
     const [form, setForm] = useState({ description: data.description });
     const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
