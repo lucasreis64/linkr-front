@@ -8,8 +8,9 @@ export default function Posts(){
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [userData, setUserData] = useState({});
+    const [att, setAtt] = useState(0);
     const { token } = useContext(contexto);
-
+    console.log(token);
     useEffect(() => {
         getTimeline(token.token)
         .then((res)=> {
@@ -17,14 +18,20 @@ export default function Posts(){
             setUserData(res.data.loggedUser);
         })
         .catch()
-    }, []);
+    }, [att]);
 
 
     return(
         <>
             <PostsContainer>
                 {posts && posts.length > 0 ? (
-                    posts.map(p => <Post key={p.id} data={p} user={userData}/>)
+                    posts.map(p => <Post 
+                        key={p.id} 
+                        data={p} 
+                        user={userData}
+                        setAtt={setAtt}
+                        att={att}
+                        token={token}/>)
                 ): (
                     <div>loading...</div>
                 )}
