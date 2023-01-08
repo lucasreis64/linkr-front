@@ -8,6 +8,7 @@ export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [userData, setUserData] = useState({});
+    const [att, setAtt] = useState(0);
     const { token } = useContext(contexto);
     const [status, setStatus] = useState(null);
 
@@ -23,7 +24,7 @@ export default function Posts(){
             setStatus(res.status);
         })
         .catch()
-    }, []);
+    }, [att]);
 
     const getMessage = () => {
         if(status !== 200){
@@ -36,7 +37,13 @@ export default function Posts(){
         <>
             <PostsContainer>
                 {posts && posts.length > 0 ?  (
-                    posts.map(p => <Post key={p.id} data={p} user={userData}/>)
+                    posts.map(p => <Post 
+                        key={p.id} 
+                        data={p} 
+                        user={userData}
+                        setAtt={setAtt}
+                        att={att}
+                        token={token}/>)
                 ): (
                     <div>{loading ? 'Loading...' : getMessage()}</div>
                 )}

@@ -1,10 +1,13 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import NewPost from "../components/NewPost";
 import Posts from "../components/Posts";
 import Trending from "../components/Trending";
 
-export default function Timeline(){
+export default function Timeline()
+{
+
 
     return (
         <>
