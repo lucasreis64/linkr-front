@@ -1,16 +1,16 @@
 import styled from "styled-components"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { getTrendings } from "../service/api";
 import { Link } from "react-router-dom";
+import { contexto } from "../context/userContext";
 
 export default function Trending(){
     const [trends, setTrends] = useState([]);
-
+    const { attpage } = useContext(contexto);
     //const token = localStorage.getItem("token");
     
     useEffect(() => {
         let isApiSubscribed = true;
-    
         getTrendings().then((res) => {
           if(isApiSubscribed) 
           {
@@ -23,7 +23,7 @@ export default function Trending(){
         {
           isApiSubscribed = false;
         };
-      }, []);
+      }, [attpage]);
 
     return(
         <>
@@ -46,6 +46,7 @@ const TrendContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     width: 400px;
+    height: 500px;
     background: #171717;
     border-radius: 16px;
     margin-left: 15px;

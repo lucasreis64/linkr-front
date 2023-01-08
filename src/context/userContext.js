@@ -4,6 +4,7 @@ export const contexto = createContext("");
 
 export const Context = (props) => {
     const [permanecerConectado, setPermanecerConectado] = useState(false);
+    const [attpage, setAttpage] = useState(0);
     const [token, setToken] = useState(
         JSON.parse(localStorage?.getItem("userInfo"))
     );
@@ -15,6 +16,8 @@ export const Context = (props) => {
                 setToken,
                 permanecerConectado,
                 setPermanecerConectado,
+                attpage,
+                setAttpage,
             }}
         >
             {props.children}

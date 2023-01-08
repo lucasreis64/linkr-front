@@ -39,4 +39,24 @@ export function removeLike(token, postId){
     return requisition;
 }
 
+export function deletePost(token, id)
+{
+    const requisition = axios.delete(
+        `${URL}/delete/${id}`, 
+        headerCreator(token)
+        );
 
+    return requisition;
+}
+
+export function updatePost(token, description, link, id)
+{
+    const requisition = axios.put(
+        `${URL}/update/${id}`,
+        {link: link, 
+        description: description}, 
+        headerCreator(token)
+        );
+
+    return requisition;
+}
