@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import { useState, useContext, useEffect, useRef, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
-import { contexto } from "../context/userContext";
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
@@ -156,7 +155,7 @@ export default function Post(props){
                         <Link to='/' className="username">{data.username}</Link>
                         <div className={`menu-op ${isEditable ? '' : 'hidden'}`} >
                             <FaPen cursor={"pointer"} onClick={() => setIsEditing(true)} />
-                            <FaTrash cursor={"pointer"} onClick={() => alert("função deletar")} />
+                            <FaTrash cursor={"pointer"} onClick={() => openModal()} />
                             <Modal
                             isOpen={modalIsOpen}
                             onAfterOpen={afterOpenModal}
@@ -173,7 +172,7 @@ export default function Post(props){
                                         <B2 onClick={deleteP}>Yes, delete it</B2>
                                     </Buttons>
                                 </Box>
-                        </Modal>
+                            </Modal>
                         </div>
                     </div>
                 <Form onSubmit={handleSendForm}>
