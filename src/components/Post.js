@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useState, useContext, useEffect, useRef } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash } from "react-icons/fa";
-
-import { Link } from "react-router-dom";
+import { Parser } from "simple-text-parser";
+import { Link, useNavigate } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import Modal from 'react-modal';
@@ -31,7 +31,22 @@ export default function Post(props){
       }, [isEditing]);
     const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
+<<<<<<< HEAD
+=======
+    const {token} = useContext(contexto);
+    const navigate = useNavigate();
+>>>>>>> main
 
+    const parser = new Parser();
+    parser.addRule(/\#[\S]+/gi, function (tag) {
+        return `<span className="tag" 
+                onClick={() => navigate('/hashtag/${tag.substring(1)}')}>
+                ${tag}
+                </span>`;
+        });
+
+    const description = parser.render(data.description)
+    console.log(description)
 
     function handleForm({ value, name }) {
         setForm({
@@ -98,6 +113,7 @@ export default function Post(props){
         }
     }
 
+<<<<<<< HEAD
     function afterOpenModal() 
     {
 
@@ -136,6 +152,8 @@ export default function Post(props){
         });
     }
 
+=======
+>>>>>>> main
     return (
         <>
             <PostContainer>
@@ -175,6 +193,7 @@ export default function Post(props){
                             </Modal>
                         </div>
                     </div>
+<<<<<<< HEAD
                 <Form onSubmit={handleSendForm}>
                     {isEditing ? (
                         <Input
@@ -195,6 +214,26 @@ export default function Post(props){
                     <button type="submit" className="hidden"></button>
                 </Form>
                 <a href={data.link_metadata?.url} className={
+=======
+                    <Form onSubmit={handleSendForm}>
+                        {isEditing ? (
+                            <Input
+                                name="description"
+                                type="text"
+                                value={form?.description}
+                                required
+                                onChange={(e) => handleForm({
+                                    name: e.target.name,
+                                    value: e.target.value
+                                })}
+                            />
+                        ) : (
+                            <Text>{description}</Text>
+                        )}
+                        <button type="submit" className="hidden"></button>
+                    </Form>
+                    <a href={data.link_metadata?.url} className={
+>>>>>>> main
                         data.link_metadata?.url !== undefined
                         && data.link_metadata?.url !== null
                         && data.link_metadata?.url !== '' ?
@@ -453,8 +492,6 @@ const Input = styled.input`
 	font-family: 'Lato';
 	font-size: 15px;
     font-weight: 300;
-
-    
 `
 
 const Text = styled.div`
@@ -466,7 +503,10 @@ const Text = styled.div`
 	color: #B7B7B7;
     font-size: 17px;
     line-height: 20px;
-    
+
+    .tag {
+        font-weight: bold;
+    }
 `
 
 const Image = styled.div`
