@@ -9,11 +9,10 @@ import { ReactTagify } from "react-tagify";
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
+
 export default function Post(props){
 
     const {user, data, token} = {...props};
-    
-
     const [form, setForm] = useState({ description: data.description });
     const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
