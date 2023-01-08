@@ -21,6 +21,24 @@ export function getTimeline(token){
     return requisition;
 }
 
+export function postLike(token, postId){
+    const requisition = axios.post(
+        `${URL}/timeline/like`, {post_id: postId},
+        headerCreator(token),
+        );
+
+    return requisition;
+}
+
+export function removeLike(token, postId){
+    const requisition = axios.post(
+        `${URL}/timeline/dislike`, {post_id: postId},
+        headerCreator(token),
+        );
+
+    return requisition;
+}
+
 export function deletePost(token, id)
 {
     const requisition = axios.delete(
@@ -42,4 +60,3 @@ export function updatePost(token, description, link, id)
 
     return requisition;
 }
-
