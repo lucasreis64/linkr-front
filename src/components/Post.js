@@ -23,7 +23,7 @@ export default function Post(props){
     const [message, setMessage] = useState(likesCount > 0 ? updateLikeTooltip() : '');
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-    console.log(data.user_id + " " + user.id)
+    //console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -146,7 +146,7 @@ export default function Post(props){
     }
     
     function updateLikeTooltip(){
-        console.log(data?.likes_users);
+        //console.log(data?.likes_users);
         let param1, param2, param3 = '';
         
         if(isLiked){
@@ -154,47 +154,39 @@ export default function Post(props){
             
             if(likesCount > 1){
                 param2 = (([...data?.likes_users]?.filter((i) => i !== user.username))[0]);
-                
-            }
-            
+            }  
         }
 
         if(!isLiked){
-           
             param1 = data?.likes_users[0];
             if(likesCount > 1){
                 param2 = data?.likes_users[1];
-                
             }
-            
         }
 
         if(likesCount > 2){
             const number = parseInt(likesCount)-2;
             param2 = ', ' + param2;
             param3 = ' e outras ' +number+ ' pessoas';
-            
         }
 
         if(likesCount === 2){
             param2 = ' e ' + param2;
-            
         }
-
 
         if(param1 === undefined || param1 === null){
             param1 = '';
         }
+
         if(param2 === undefined || param2 === null){
             param2 = '';
         }
+
         if(param3 === undefined || param3 === null){
             param3 = '';
         }
         //console.log(param1, param2, param3 )
-
         return ''+param1+param2+param3;
-
     }
 
     return (
@@ -407,7 +399,7 @@ const PostContainer = styled.div`
             text-align: center;
 
             .like-count{
-                width: 60%;
+                width: 100%;
                 margin-top: 5px;
                 font-size: 11px;
                 line-height: 13px;
@@ -423,7 +415,6 @@ const PostContainer = styled.div`
             width: 100%;
             display: flex;
             justify-content: space-between;
-
 
             .username{        
                 font-size: 20px;
@@ -451,7 +442,6 @@ const PostContainer = styled.div`
             justify-content: space-between;
             border: 1px solid #4D4D4D;
             border-radius: 11px;
-    
 
             .text-container{
                 width: 60%;
@@ -473,17 +463,6 @@ const PostContainer = styled.div`
                     font-size: 11px;
                     line-height: 13px;
                     margin-bottom: 13px;
-                    color: #9B9595;
-                    max-width: 100%;
-                    height: 30px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-                p{
-                    font-size: 11px;
-                    line-height: 13px;
                     text-decoration: none;
                     color: #CECECE;
                     white-space: nowrap;
@@ -491,18 +470,12 @@ const PostContainer = styled.div`
                     text-overflow: ellipsis;
                 }
             }
-
         }
-
-        
-
     }
 
     @media screen and (max-width: 600px) {
         max-width: 100%;
         border-radius: 0;
-
-        
     }
 
     @media screen and (max-width: 768px) {
@@ -515,7 +488,6 @@ const Form = styled.form`
     margin-top: 10px;
     max-width: 500px;
     margin-bottom: 5px;
-
 `
 
 const Input = styled.input`
@@ -534,17 +506,13 @@ const Input = styled.input`
 
 const Text = styled.div`
     width:100%;
-    height: 50px;
-    min-height: 44px;
+    height: 100%;
+    min-height: 30px;
     border-radius: 5px;
     border-style: none;
 	color: #B7B7B7;
     font-size: 17px;
     line-height: 20px;
-
-    .tag {
-        font-weight: bold;
-    }
 `
 
 const Image = styled.div`
@@ -555,6 +523,5 @@ const Image = styled.div`
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
-             
+    background-size: cover;        
 `
