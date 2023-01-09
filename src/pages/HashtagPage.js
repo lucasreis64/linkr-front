@@ -4,19 +4,32 @@ import NavBar from "../components/NavBar";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import { MutatingDots } from "react-loader-spinner";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { URLS } from "../assets/constants/constants";
+import { contexto } from "../context/userContext";
+import { getHashtagPage } from "../service/api";
 
 export default function HashtagPage(){
     const { hashtag } = useParams();
-    const [hashtagPosts, setHashtagPosts] = useState([])
+    const [hashtagPosts, setHashtagPosts] = useState([]);
+    const [userData, setUserData] = useState({});
+    const [att, setAtt] = useState(0);
+    const { token } = useContext(contexto);
+    const [status, setStatus] = useState(null);
+    
 
     useEffect(() => {
-        axios.get(URLS.HASHTAG + hashtag)
-        .then(response => setHashtagPosts(response.data))
-        .catch(e => console.log(e));
-    })
+        getHashtagPage(token.token, hashtag)
+        .then((res)=> {
+            console.log(res.data);
+            setHashtagPosts(res.data.data);
+            setUserData(res.data.loggedUser);
+            setStatus(res.status);
+        })
+        .catch()
+    }, [att]);
+
 
     return (
         <>
@@ -27,7 +40,13 @@ export default function HashtagPage(){
             <TimelineContainer> 
                 <PostsContainer>
                     {hashtagPosts && hashtagPosts.length > 0 ?  (
-                        hashtagPosts.map(p => <Post key={p.id} data={p} user={p.userData}/>)
+                        hashtagPosts.map(p => <Post 
+                            key={p.id} 
+                            data={p} 
+                            user={userData}
+                            setAtt={setAtt}
+                            att={att}
+                            token={token}/>)
                     ): (
                         <MutatingDots 
                         color="#FFFFFF"

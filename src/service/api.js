@@ -21,6 +21,15 @@ export function getTimeline(token){
     return requisition;
 }
 
+export function getHashtagPage(token, hashtag) {
+    const requisition = axios.get(
+        `${URL}/hashtag/${hashtag}`,  
+        headerCreator(token),
+        );
+
+    return requisition;
+}
+
 export function postLike(token, postId){
     const requisition = axios.post(
         `${URL}/timeline/like`, {post_id: postId},
