@@ -260,7 +260,7 @@ export default function Post(props){
                     ):(
                         <Text><ReactTagify 
                         tagStyle={tagStyle} 
-                        tagClicked={(tag)=> alert(tag)}>
+                        tagClicked={(tag)=> navigate(`/hashtag/${tag.substring(1)}`)}>
                         <p>
                           {data.description}
                         </p>
