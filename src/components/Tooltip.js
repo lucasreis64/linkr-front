@@ -3,7 +3,6 @@ import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
 export default function LikeTooltip({ data }) {
-
     useEffect(() => {
         render();
     }, data?.likesCount);
@@ -21,7 +20,6 @@ export default function LikeTooltip({ data }) {
             </>
         )
     }
-
 
     return render();
 }

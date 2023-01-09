@@ -31,7 +31,6 @@ export default function HashtagPage(){
         .catch()
     }, [att, attpage]);
 
-
     return (
         <>
             <NavBar></NavBar>
@@ -91,18 +90,15 @@ const Body = styled.div`
     width: 100%;
     
 `
-
 const T = styled.div` 
     margin-top: -120px;
-        display: flex;
-        font-family: 'Oswald', sans-serif;
-        font-size: 43px;
-        color: white;
-        margin-bottom: 48px;
-        font-weight: 700; 
-
+    display: flex;
+    font-family: 'Oswald', sans-serif;
+    font-size: 43px;
+    color: white;
+    margin-bottom: 48px;
+    font-weight: 700; 
 `
-
 const PostsContainer = styled.div`
     width: 611px;
     margin-top: 29px;
@@ -113,7 +109,6 @@ const PostsContainer = styled.div`
 
     @media screen and (max-width: 600px) {
         max-width: 100vw;
-
     }
 
     @media screen and (max-width: 768px) {
