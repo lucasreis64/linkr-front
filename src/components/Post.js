@@ -39,8 +39,6 @@ export default function Post(props){
       }, [isEditing]);
     
     data.likes_count = data.likes_users.length;
-    
-
 
     function handleForm({ value, name }) {
         setForm({

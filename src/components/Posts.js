@@ -8,9 +8,8 @@ import { getTimeline } from "../service/api";
 export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
-    const [userData, setUserData] = useState({});
     const [att, setAtt] = useState(0);
-    const { token } = useContext(contexto);
+    const { token, userData, setUserData} = useContext(contexto);
     const [status, setStatus] = useState(null);
 
     const message1 = 'An error occured while trying to fetch the posts, please refresh the page';

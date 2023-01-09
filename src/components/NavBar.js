@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import logo from "../assets/images/logo.svg"
 import lupa from "../assets/images/lupa.svg"
-import userphoto from "../assets/images/user.png"
 import down from "../assets/images/down.png"
 import up from "../assets/images/up.png"
 import {DebounceInput} from 'react-debounce-input';
@@ -15,12 +14,11 @@ import { contexto } from "../context/userContext"
 import { slideTop } from "../assets/animations/animations"
 
 export default function NavBar(){
-
     const [search, setSearch] = useState("");
     const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
     const [suggestions, setSuggestions] = useState([])
     const [logoutMenu, setLogoutMenu] = useState(false)
-    const {setToken} = useContext(contexto)
+    const {setToken, userData} = useContext(contexto)
     const navigate = useNavigate()
     
     function handleChange(e) {
@@ -61,7 +59,7 @@ export default function NavBar(){
             </SearchContainer>
             <UserContainer>
                 {logoutMenu?<img onClick={handleLogout} className="arrow" src={up} alt="arrow"/>:<img onClick={handleLogout} className="arrow" src={down} alt="arrow"/>}
-                <img src={userphoto} alt="user"/>
+                <img className="profile-picture" src={userData.profile_picture} alt="user"/>
                 {logoutMenu?<div className="logout-menu"><button onClick={()=><>{localStorage.clear()};{setToken({})};{navigate('/')}</>}>Logout</button></div>:true}
             </UserContainer>
         </NavContainer>
@@ -228,10 +226,10 @@ const NavContainer = styled.div`
     }
     
     .profile-picture {
-        width: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: inline;
+        width: 50px;
+        height: 50px;
+        border-radius: 26px;
     }
 
     .fake-navbar {
