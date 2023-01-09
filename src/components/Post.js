@@ -212,7 +212,7 @@ export default function Post(props){
                 </div>
                 <div className="right">
                     <div className="header">
-                        <Link to='/' className="username">{data.username}</Link>
+                        <Link to={`/users/${user.id}`} className="username">{data.username}</Link>
                         <div className={`menu-op ${isEditable ? '' : 'hidden'}`} >
                             <FaPen cursor={"pointer"} onClick={() => setIsEditing(true)} />
                             <FaTrash cursor={"pointer"} onClick={() => openModal()} />
