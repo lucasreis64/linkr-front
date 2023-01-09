@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { contexto } from "../context/userContext";
 import Post from "./Post";
+import { MutatingDots } from "react-loader-spinner";
 import { getTimeline } from "../service/api";
 
 export default function Posts(){
@@ -45,7 +46,10 @@ export default function Posts(){
                         att={att}
                         token={token}/>)
                 ): (
-                    <div>{loading ? 'Loading...' : getMessage()}</div>
+                    <div>{loading ? <MutatingDots 
+                        color="#FFFFFF"
+                        secondaryColor="#C6C6C6"
+                    /> : getMessage()}</div>
                 )}
             </PostsContainer>
         </>
@@ -62,7 +66,6 @@ const PostsContainer = styled.div`
 
     @media screen and (max-width: 600px) {
         max-width: 100vw;
-
     }
 
     @media screen and (max-width: 768px) {

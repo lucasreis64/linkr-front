@@ -20,7 +20,7 @@ export default function Post(props){
     const [loading, setloading] = useState("Are you sure you want to delete this post?");
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-
+    console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -31,22 +31,29 @@ export default function Post(props){
     useEffect(() => {
         if (isEditing) {
           inputRef.current.focus();
-        }    
-    }, [isEditing]);
-
+        }
+        
+      }, [isEditing]);
+    
+    data.likes_count = data.likes_users.length;
     const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
+
     function handleForm({ value, name }) {
-        setForm({[name]: value});
+        setForm({
+            [name]: value
+        });
     }
 
-    function handleSendForm(e){
+    function handleSendForm(e)
+    {
         e.preventDefault();
         setIsEditing(false);
         
         const requisicao = updatePost(token.token, form.description, data.link, data.id);
 
-        requisicao.then((e) => {
+        requisicao.then((e) => 
+        {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             setForm({
@@ -54,13 +61,19 @@ export default function Post(props){
             });
         });
         requisicao.catch((e) => {
+            
             alert("updatePost deu errado " + e);
             setIsEditing(true);
         });
+
+        //UPDATE DO POST COM OBJETO FORM.description
+
     }
 
-    function handleKeyDown(e){
-        if (e.keyCode === 27){
+    function handleKeyDown(e)
+    {
+        if (e.keyCode === 27) 
+        {
             e.preventDefault();
             setIsEditing(false);
             setForm({
@@ -81,6 +94,7 @@ export default function Post(props){
         }
 
         if(action === 'dislike') {
+
             removeLike(token.token, data.id)
             .then((res)=> {
                 console.log(res.status);
@@ -95,27 +109,32 @@ export default function Post(props){
 
     }
 
-    function openModal() {
+    function openModal() 
+    {
         setIsOpen(true);
     }
      
-    function closeModal() {
+    function closeModal() 
+    {
         setIsOpen(false);
     }
 
-    function deleteP(){
+    function deleteP()
+    {
         setButton("none");
         setloading("loading...");
         const requisicao = deletePost(token.token, data.id);
 
-        requisicao.then((e) => {
+        requisicao.then((e) => 
+        {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             closeModal();
             setButton("flex");
             setloading("Are you sure you want to delete this post?");
         });
-        requisicao.catch((e) => {  
+        requisicao.catch((e) => {
+            
             alert("deletePost deu errado " + e);
             closeModal();
             setButton("flex");
@@ -127,7 +146,7 @@ export default function Post(props){
         <>
             <PostContainer>
                 <div className="left">
-                    <img className="profile-picture" src={data.profile_picture} alt="user" />
+                    <img className="profile-picture" src={data.profile_picture} alt="user" onClick={() => navigate('/users/' + data.user_id)}/>
                     <div className="like-actions">
                         {isLiked ? (
                             <FaHeart cursor={"pointer"} color="red" onClick={() => tapLike('dislike')} />
@@ -179,7 +198,7 @@ export default function Post(props){
                     ):(
                         <Text><ReactTagify 
                         tagStyle={tagStyle} 
-                        tagClicked={(tag)=> navigate(`/hashtag/${tag.substring(1)}`)}>
+                        tagClicked={(tag)=> alert(tag)}>
                         <p>
                           {data.description}
                         </p>
@@ -305,8 +324,8 @@ const PostContainer = styled.div`
 
     .left{
         width: 10%;
-        display: flex;
         flex-direction: column;
+        display: flex;
         align-items: center;
         margin-right: 12px;
 
@@ -315,6 +334,7 @@ const PostContainer = styled.div`
             height: 50px;
             border-radius: 26px;
             margin-bottom: 19px;
+            cursor: pointer;
         }
         
         .like-actions{
