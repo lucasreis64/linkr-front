@@ -5,7 +5,6 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import { MutatingDots } from "react-loader-spinner";
 import { useEffect, useState, useContext } from "react";
-import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { URLS } from "../assets/constants/constants";
 import { contexto } from "../context/userContext";
