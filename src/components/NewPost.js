@@ -95,7 +95,7 @@ const NewPostContainer = styled.div`
     }
 
     @media screen and (max-width: 600px) {
-        max-width: 100%;
+        width: 100% !important;
         border-radius: 0;
 
         .profile-picture {
@@ -112,7 +112,7 @@ const NewPostContainer = styled.div`
     }
 
     @media screen and (max-width: 768px) {
-        max-width: 100%;
+        width: 100%;
     }
 `
 const Form = styled.form`

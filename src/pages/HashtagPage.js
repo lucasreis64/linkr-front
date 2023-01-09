@@ -18,7 +18,6 @@ export default function HashtagPage(){
     const { attpage } = useContext(contexto);
     const [temPosts, setTemPosts] = useState(false);
     
-
     useEffect(() => {
         setTemPosts(false);
         getHashtagPage(token.token, hashtag)
@@ -36,7 +35,7 @@ export default function HashtagPage(){
     return (
         <>
             <NavBar></NavBar>
-            <Body>    
+            <Body>      
             <Box>
             <TimelineContainer>
                 <PostsContainer>  
@@ -86,7 +85,7 @@ const Body = styled.div`
     display: flex;
     box-sizing: border-box;
     word-break: break-word;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     margin-top: 54px;
     width: 100%;
