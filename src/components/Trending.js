@@ -6,7 +6,7 @@ import { contexto } from "../context/userContext";
 
 export default function Trending(){
     const [trends, setTrends] = useState([]);
-    const { attpage } = useContext(contexto);
+    const { attpage, setAttpage } = useContext(contexto);
     //const token = localStorage.getItem("token");
     
     useEffect(() => {
@@ -31,7 +31,7 @@ export default function Trending(){
             <Topo>
                 <h1>trending</h1>
             </Topo>
-           {trends.map((trend, index) => <Link key={index} to={`/hashtag/${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
+           {trends.map((trend, index) => <Link key={index} onClick={()=> setAttpage(attpage+1)} to={`/hashtag/${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
         </TrendContainer>
         </>
     )
@@ -75,13 +75,13 @@ const TrendContainer = styled.div`
         margin-left: 15px;
         color: #FFFFFF;
     }
-    @media (max-width: 1150px)
+    @media (max-width: 1205px)
     {
         display: none;
 	}
     @media (min-width: 1150px)
     {
-        margin-left: 55%;
+        margin-left: 51%;
 	}
     @media (min-width: 1360px)
     {

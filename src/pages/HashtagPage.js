@@ -1,4 +1,3 @@
-import axios from "axios";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Post from "../components/Post";
@@ -6,7 +5,6 @@ import Trending from "../components/Trending";
 import { MutatingDots } from "react-loader-spinner";
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { URLS } from "../assets/constants/constants";
 import { contexto } from "../context/userContext";
 import { getHashtagPage } from "../service/api";
 
@@ -17,29 +15,36 @@ export default function HashtagPage(){
     const [userData, setUserData] = useState({});
     const [att, setAtt] = useState(0);
     const [status, setStatus] = useState(null);
+    const { attpage } = useContext(contexto);
+    const [temPosts, setTemPosts] = useState(false);
     
 
     useEffect(() => {
+        setTemPosts(false);
         getHashtagPage(token.token, hashtag)
         .then((res)=> {
             console.log(res.data);
             setHashtagPosts(res.data.data);
             setUserData(res.data.loggedUser);
             setStatus(res.status);
+            setTemPosts(true);
         })
         .catch()
-    }, [att]);
+    }, [att, attpage]);
 
 
     return (
         <>
             <NavBar></NavBar>
-            <Body>     
-            <T><h1>title</h1></T>  
+            <Body>    
             <Box>
-            <TimelineContainer> 
-                <PostsContainer>
-                    {hashtagPosts && hashtagPosts.length > 0 ?  (
+            <TimelineContainer>
+                <PostsContainer>  
+                <T>
+                    <div/>
+                    <h1># {hashtag}</h1>
+                </T>  
+                {temPosts ?  (
                         hashtagPosts.map(p => <Post 
                             key={p.id} 
                             data={p} 
@@ -71,7 +76,6 @@ const Box = styled.div`
 `;
 
 const TimelineContainer = styled.div`
-    
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -84,16 +88,20 @@ const Body = styled.div`
     word-break: break-word;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 100px;
+    margin-top: 54px;
     width: 100%;
+    
 `
 
 const T = styled.div` 
-    font-family: 'Oswald', sans-serif;
-    font-size: 43px;
-    color: white;
-    font-weight: 700;
-   
+    margin-top: -120px;
+        display: flex;
+        font-family: 'Oswald', sans-serif;
+        font-size: 43px;
+        color: white;
+        margin-bottom: 48px;
+        font-weight: 700; 
+
 `
 
 const PostsContainer = styled.div`

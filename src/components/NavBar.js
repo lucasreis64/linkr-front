@@ -143,6 +143,9 @@ const SearchContainer = styled.div`
         right: 13px !important;
         top: 11px !important;
         z-index: 2;
+        @media (max-width: 600px) {
+        display: none;
+    }
     }
     input {
         width: 100%;
