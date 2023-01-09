@@ -21,6 +21,7 @@ export default function NewPost(){
                 token: token.token})
             .then((res) => {
                 setLoading(false)
+                window.location.reload();
             })
             .catch((err) => { 
                 alert(`Houve um erro ao publicar seu link! \n${err.response.data.message}`)
