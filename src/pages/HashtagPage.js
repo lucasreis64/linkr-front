@@ -30,7 +30,7 @@ export default function HashtagPage(){
             <TimelineContainer> 
                 <PostsContainer>
                     {hashtagPosts && hashtagPosts.length > 0 ?  (
-                        hashtagPosts.map(p => <Post key={p.id} data={p} user={p.user_id}/>)
+                        hashtagPosts.map(p => <Post key={p.id} data={{...p, 'user_id': p.user_id}} user={{'id': p.user_id}}/>)
                     ): (
                         <MutatingDots 
                         color="#FFFFFF"
