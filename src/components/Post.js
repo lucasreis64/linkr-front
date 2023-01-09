@@ -22,7 +22,7 @@ export default function Post(props){
     const [loading, setloading] = useState("Are you sure you want to delete this post?");
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-
+    console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -36,10 +36,9 @@ export default function Post(props){
         }
         
       }, [isEditing]);
-    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
-
-
     
+    data.likes_count = data.likes_users.length;
+    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
 
     function handleForm({ value, name }) {
@@ -149,7 +148,7 @@ export default function Post(props){
         <>
             <PostContainer>
                 <div className="left">
-                    <img className="profile-picture" src={data.profile_picture} alt="user" />
+                    <img className="profile-picture" src={data.profile_picture} alt="user" onClick={() => navigate('/users/' + data.user_id)}/>
                     <div className="like-actions">
                         {isLiked ? (
                             <FaHeart cursor={"pointer"} color="red" onClick={() => tapLike('dislike')} />
@@ -337,6 +336,7 @@ const PostContainer = styled.div`
             height: 50px;
             border-radius: 26px;
             margin-bottom: 19px;
+            cursor: pointer;
         }
         
         .like-actions{
