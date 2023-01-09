@@ -17,7 +17,6 @@ export default function HashtagPage(){
     const [hashtagPosts, setHashtagPosts] = useState([]);
     const [userData, setUserData] = useState({});
     const [att, setAtt] = useState(0);
-    const { token } = useContext(contexto);
     const [status, setStatus] = useState(null);
     
 
