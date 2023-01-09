@@ -49,10 +49,10 @@ export function deletePost(token, id)
     return requisition;
 }
 
-export function updatePost(token, description, link, id)
+export function updatePost(token, description, link, post_id)
 {
     const requisition = axios.put(
-        `${URL}/update/${id}`,
+        `${URL}/update/${post_id}`,
         {link: link, 
         description: description}, 
         headerCreator(token)

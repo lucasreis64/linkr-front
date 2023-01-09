@@ -6,12 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 Modal.setAppElement('#root');
 
-
 export default function Post(props){
-
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
     const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
@@ -326,8 +324,8 @@ const PostContainer = styled.div`
 
     .left{
         width: 10%;
-        display: flex;
         flex-direction: column;
+        display: flex;
         align-items: center;
         margin-right: 12px;
 
