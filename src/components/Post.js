@@ -7,20 +7,23 @@ import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
 import Modal from "react-modal";
+import LikeTooltip from "./Tooltip";
 Modal.setAppElement('#root');
 
 export default function Post(props){
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
-    const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
+    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username));
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [button, setButton] = useState("flex");
     const [loading, setloading] = useState("Are you sure you want to delete this post?");
+    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
+    const [message, setMessage] = useState(likesCount > 0 ? updateLikeTooltip() : '');
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-
+    console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -31,22 +34,29 @@ export default function Post(props){
     useEffect(() => {
         if (isEditing) {
           inputRef.current.focus();
-        }    
-    }, [isEditing]);
+        }
+        
+      }, [isEditing]);
+    
+    data.likes_count = data.likes_users.length;
+    
 
-    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
     function handleForm({ value, name }) {
-        setForm({[name]: value});
+        setForm({
+            [name]: value
+        });
     }
 
-    function handleSendForm(e){
+    function handleSendForm(e)
+    {
         e.preventDefault();
         setIsEditing(false);
         
         const requisicao = updatePost(token.token, form.description, data.link, data.id);
 
-        requisicao.then((e) => {
+        requisicao.then((e) => 
+        {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             setForm({
@@ -54,13 +64,19 @@ export default function Post(props){
             });
         });
         requisicao.catch((e) => {
+            
             alert("updatePost deu errado " + e);
             setIsEditing(true);
         });
+
+        //UPDATE DO POST COM OBJETO FORM.description
+
     }
 
-    function handleKeyDown(e){
-        if (e.keyCode === 27){
+    function handleKeyDown(e)
+    {
+        if (e.keyCode === 27) 
+        {
             e.preventDefault();
             setIsEditing(false);
             setForm({
@@ -76,15 +92,18 @@ export default function Post(props){
             .then((res)=> {
                 console.log(res.status);
                 setLikesCount(likesCount+1);
+                setMessage(updateLikeTooltip());
             })
             .catch()
         }
 
         if(action === 'dislike') {
+
             removeLike(token.token, data.id)
             .then((res)=> {
                 console.log(res.status);
                 setLikesCount(likesCount-1);
+                setMessage(updateLikeTooltip());
             })
             .catch()
         }
@@ -95,46 +114,110 @@ export default function Post(props){
 
     }
 
-    function openModal() {
+    function openModal() 
+    {
         setIsOpen(true);
     }
      
-    function closeModal() {
+    function closeModal() 
+    {
         setIsOpen(false);
     }
 
-    function deleteP(){
+    function deleteP()
+    {
         setButton("none");
         setloading("loading...");
         const requisicao = deletePost(token.token, data.id);
 
-        requisicao.then((e) => {
+        requisicao.then((e) => 
+        {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             closeModal();
             setButton("flex");
             setloading("Are you sure you want to delete this post?");
         });
-        requisicao.catch((e) => {  
+        requisicao.catch((e) => {
+            
             alert("deletePost deu errado " + e);
             closeModal();
             setButton("flex");
             setloading("Are you sure you want to delete this post?");
         });
     }
+    
+    function updateLikeTooltip(){
+        console.log(data?.likes_users);
+        let param1, param2, param3 = '';
+        
+        if(isLiked){
+            param1 = 'Você';
+            
+            if(likesCount > 1){
+                param2 = (([...data?.likes_users]?.filter((i) => i !== user.username))[0]);
+                
+            }
+            
+        }
+
+        if(!isLiked){
+           
+            param1 = data?.likes_users[0];
+            if(likesCount > 1){
+                param2 = data?.likes_users[1];
+                
+            }
+            
+        }
+
+        if(likesCount > 2){
+            const number = parseInt(likesCount)-2;
+            param2 = ', ' + param2;
+            param3 = ' e outras ' +number+ ' pessoas';
+            
+        }
+
+        if(likesCount === 2){
+            param2 = ' e ' + param2;
+            
+        }
+
+
+        if(param1 === undefined || param1 === null){
+            param1 = '';
+        }
+        if(param2 === undefined || param2 === null){
+            param2 = '';
+        }
+        if(param3 === undefined || param3 === null){
+            param3 = '';
+        }
+        //console.log(param1, param2, param3 )
+
+        return ''+param1+param2+param3;
+
+    }
 
     return (
         <>
             <PostContainer>
                 <div className="left">
-                    <img className="profile-picture" src={data.profile_picture} alt="user" />
+                    <img className="profile-picture" src={data.profile_picture} alt="user" onClick={() => navigate('/users/' + data.user_id)}/>
                     <div className="like-actions">
                         {isLiked ? (
                             <FaHeart cursor={"pointer"} color="red" onClick={() => tapLike('dislike')} />
                         ) : (
                             <FaRegHeart cursor={"pointer"} onClick={() => tapLike('like')} />
                         )}
-                        <div className="like-count">{likesCount > 0 ? `${likesCount} likes` : null}</div>
+                        <div>
+                           {likesCount > 0 ?
+                                <LikeTooltip 
+                                    key={data.id}
+                                    data={{message, likesCount, id: data.id}}
+                                /> : ''
+                            }        
+                        </div>
                     </div>
                 </div>
                 <div className="right">
@@ -179,7 +262,7 @@ export default function Post(props){
                     ):(
                         <Text><ReactTagify 
                         tagStyle={tagStyle} 
-                        tagClicked={(tag)=> navigate(`/hashtag/${tag.substring(1)}`)}>
+                        tagClicked={(tag)=> alert(tag)}>
                         <p>
                           {data.description}
                         </p>
@@ -187,7 +270,7 @@ export default function Post(props){
                     )}
                     <button type="submit" className="hidden"></button>
                 </Form>
-                <a href={data.link_metadata?.url} className={
+                <a href={data.link_metadata?.url} target="_blank" rel="noreferrer" className={
                         data.link_metadata?.url !== undefined
                         && data.link_metadata?.url !== null
                         && data.link_metadata?.url !== '' ?
@@ -305,8 +388,8 @@ const PostContainer = styled.div`
 
     .left{
         width: 10%;
-        display: flex;
         flex-direction: column;
+        display: flex;
         align-items: center;
         margin-right: 12px;
 
@@ -315,6 +398,7 @@ const PostContainer = styled.div`
             height: 50px;
             border-radius: 26px;
             margin-bottom: 19px;
+            cursor: pointer;
         }
         
         .like-actions{
@@ -322,13 +406,15 @@ const PostContainer = styled.div`
             flex-direction: column;
             align-items: center;
             font-size: 19px;
+            text-align: center;
 
             .like-count{
-                width: 100%;
+                width: 60%;
                 margin-top: 5px;
                 font-size: 11px;
                 line-height: 13px;
             }
+           
         }
     }
 

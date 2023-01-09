@@ -44,7 +44,7 @@ export default function NavBar(){
     return (
         <>
         <NavContainer>
-            <img className="logo" src={logo} alt="logo"/>
+            <img className="logo" src={logo} alt="logo" onClick={() => navigate('/timeline')}/>
             <SearchContainer origin={"desktop"}
             onFocus={() => setSuggestionsDisplay("block")}
             onBlur={handleBlur}
@@ -160,6 +160,9 @@ const SearchContainer = styled.div`
         line-height: 23px;  
         border: 0px;
         outline: none;
+        @media (max-width: 600px) {
+        display: none;
+    }
     }
     @media (min-width: 600px) {
         display: ${props => props.origin === "desktop" ? "block" : "none"};
@@ -218,6 +221,7 @@ const NavContainer = styled.div`
     display: hidden;
 
     .logo {
+        cursor: pointer;
         width: 100%;
         max-width: 100px;
         margin-right: 10px;

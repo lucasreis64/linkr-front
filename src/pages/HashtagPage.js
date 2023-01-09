@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
+import { MutatingDots } from "react-loader-spinner";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { URLS } from "../assets/constants/constants";
@@ -31,7 +32,10 @@ export default function HashtagPage(){
                     {hashtagPosts && hashtagPosts.length > 0 ?  (
                         hashtagPosts.map(p => <Post key={p.id} data={p} user={p.userData}/>)
                     ): (
-                        <div>Loading...</div>
+                        <MutatingDots 
+                        color="#FFFFFF"
+                        secondaryColor="#C6C6C6"
+                    />                    
                     )}
                 </PostsContainer>
             </TimelineContainer>
