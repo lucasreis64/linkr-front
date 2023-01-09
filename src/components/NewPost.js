@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import axios from 'axios'
-import userphoto from "../assets/images/user.png"
 import { useState, useContext } from "react"
 import { contexto } from "../context/userContext"
 import { URLS } from "../assets/constants/constants";
@@ -9,7 +8,7 @@ export default function NewPost(){
     const [loading, setLoading] = useState(false)
     const [url, setUrl] = useState(undefined)
     const [text, setText] = useState("")
-    const { token } = useContext(contexto)
+    const { token, userData } = useContext(contexto)
 
     function publishPost(e) {
         e.preventDefault();
@@ -32,7 +31,7 @@ export default function NewPost(){
         <>
         <NewPostContainer>
             <div className="left">
-                <img className="profile-picture" src={userphoto} alt="user"/>
+                <img className="profile-picture" src={userData.profile_picture} alt="user"/>
             </div>
             <div className="right">
                 <h2>What are you going to share today?</h2>
@@ -84,6 +83,11 @@ const NewPostContainer = styled.div`
     .profile-picture {
         margin-right: 15px;
         display: inline;
+        width: 50px;
+        height: 50px;
+        border-radius: 26px;
+        margin-bottom: 19px;
+        cursor: pointer;
     }
 
     .right{

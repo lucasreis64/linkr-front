@@ -25,12 +25,12 @@ export default function HashtagPage(){
         <>
             <NavBar></NavBar>
             <Body>     
-            <T><h1>hashtagPosts</h1></T>  
+            <T><h1>{hashtagPosts.find(p => p.hashtag)}</h1></T>  
             <Box>
             <TimelineContainer> 
                 <PostsContainer>
                     {hashtagPosts && hashtagPosts.length > 0 ?  (
-                        hashtagPosts.map(p => <Post key={p.id} data={p} user={p.userData}/>)
+                        hashtagPosts.map(p => <Post key={p.id} data={p} user={p.user_id}/>)
                     ): (
                         <MutatingDots 
                         color="#FFFFFF"
