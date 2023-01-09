@@ -160,6 +160,9 @@ const SearchContainer = styled.div`
         line-height: 23px;  
         border: 0px;
         outline: none;
+        @media (max-width: 600px) {
+        display: none;
+    }
     }
     @media (min-width: 600px) {
         display: ${props => props.origin === "desktop" ? "block" : "none"};

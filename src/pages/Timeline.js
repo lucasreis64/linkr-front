@@ -46,10 +46,32 @@ const Body = styled.div`
     display: flex;
     box-sizing: border-box;
     word-break: break-word;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     margin-top: 100px;
+    margin-left: 20%;
     width: 100%;
+
+    @media (max-width: 600px)
+    {
+        margin-left: 0%;
+	}
+    @media (min-width: 600px)
+    {
+        margin-left: 0%;
+	}
+    @media (min-width: 657px)
+    {
+        margin-left: 5%;
+	}
+    @media (min-width: 950px)
+    {
+        margin-left: 15%;
+	}
+    @media (min-width: 1550px)
+    {
+        margin-left: 20%;
+	}
 `
 
 const T = styled.div` 

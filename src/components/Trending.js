@@ -31,7 +31,7 @@ export default function Trending(){
             <Topo>
                 <h1>trending</h1>
             </Topo>
-           {trends.map((trend, index) => <Link key={index} to={`/hashtag/:${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
+           {trends.map((trend, index) => <Link key={index} to={`/hashtag/${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
         </TrendContainer>
         </>
     )
@@ -45,36 +45,51 @@ const TrendContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 400px;
-    height: 500px;
+    width: 300px;
+    height: 400px;
     background: #171717;
     border-radius: 16px;
-    margin-left: 15px;
-    position: sticky;
-    
+    position: fixed;
     a{
         text-decoration: none;
     }
-h1{
-    font-family: 'Oswald';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 27px;
-    line-height: 40px;
-    margin: 10px;
-    color: #FFFFFF;
-    
-}
-li{
-    list-style-type: none;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 19px;
-    line-height: 23px;
-    letter-spacing: 0.05em;
-    margin: 10px;
-    color: #FFFFFF;
-}
+    h1{
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 27px;
+        line-height: 40px;
+        margin: 10px;
+        color: #FFFFFF;
+        
+    }
+    li{
+        list-style-type: none;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 19px;
+        line-height: 23px;
+        letter-spacing: 0.05em;
+        margin: 5px;
+        margin-left: 15px;
+        color: #FFFFFF;
+    }
+    @media (max-width: 1150px)
+    {
+        display: none;
+	}
+    @media (min-width: 1150px)
+    {
+        margin-left: 55%;
+	}
+    @media (min-width: 1360px)
+    {
+        margin-left: 46%;
+	}
+    @media (min-width: 1550px)
+    {
+        margin-left: 40%;
+	}
 `;
 
