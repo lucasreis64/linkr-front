@@ -1,14 +1,12 @@
 import styled from "styled-components"
 import logo from "../assets/images/logo.svg"
-import lupa from "../assets/images/lupa.svg"
 import down from "../assets/images/down.png"
 import up from "../assets/images/up.png"
 import {DebounceInput} from 'react-debounce-input';
 import { useContext, useState } from "react";
 import Suggestion from "./Suggestion";
-    import axios from "axios";
-    import { API_BASE_URL } from "../assets/constants/constants";
-import { FallingLines } from "react-loader-spinner"
+import axios from "axios";
+import { API_BASE_URL } from "../assets/constants/constants";
 import { useNavigate } from "react-router-dom"
 import { contexto } from "../context/userContext"
 import { slideTop } from "../assets/animations/animations"
