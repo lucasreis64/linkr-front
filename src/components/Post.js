@@ -107,11 +107,6 @@ export default function Post(props){
         }
     }
 
-    function afterOpenModal() 
-    {
-
-    }
-
     function openModal() 
     {
         setIsOpen(true);
@@ -212,13 +207,12 @@ export default function Post(props){
                 </div>
                 <div className="right">
                     <div className="header">
-                        <Link to='/' className="username">{data.username}</Link>
+                        <Link to={'/users/' + data.user_id} className="username">{data.username}</Link>
                         <div className={`menu-op ${isEditable ? '' : 'hidden'}`} >
                             <FaPen cursor={"pointer"} onClick={() => setIsEditing(true)} />
                             <FaTrash cursor={"pointer"} onClick={() => openModal()} />
                             <Modal
                             isOpen={modalIsOpen}
-                            onAfterOpen={afterOpenModal}
                             onRequestClose={closeModal}
                             contentLabel="onRequestClose Example"
                             style={customStyles}
