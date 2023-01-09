@@ -4,13 +4,16 @@ import NavBar from "../components/NavBar";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import { MutatingDots } from "react-loader-spinner";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { URLS } from "../assets/constants/constants";
+import { contexto } from "../context/userContext";
 
 export default function HashtagPage(){
+    const { token } = useContext(contexto);
     const { hashtag } = useParams();
     const [hashtagPosts, setHashtagPosts] = useState([])
+
 
     useEffect(() => {
         axios.get(URLS.HASHTAG + hashtag)
@@ -19,18 +22,21 @@ export default function HashtagPage(){
             console.log(response.data)
         })
         .catch(e => console.log(e));
+
+        // const hashtagName = hashtagPosts?.find(p => p.hashtag)
+
     })
 
     return (
         <>
             <NavBar></NavBar>
             <Body>     
-            <T><h1>{hashtagPosts.find(p => p.hashtag)}</h1></T>  
+            <T><h1>title</h1></T>  
             <Box>
             <TimelineContainer> 
                 <PostsContainer>
                     {hashtagPosts && hashtagPosts.length > 0 ?  (
-                        hashtagPosts.map(p => <Post key={p.id} data={{...p, 'user_id': p.user_id}} user={{'id': p.user_id}}/>)
+                        hashtagPosts.map(p => <Post token={token} key={p.id} data={{...p, ...hashtagPosts, 'user_id': p.user_id}} user={{'id': p.user_id}}/>)
                     ): (
                         <MutatingDots 
                         color="#FFFFFF"
