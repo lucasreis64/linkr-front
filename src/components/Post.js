@@ -6,12 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 Modal.setAppElement('#root');
 
-
 export default function Post(props){
-
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
     const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
@@ -33,30 +31,22 @@ export default function Post(props){
     useEffect(() => {
         if (isEditing) {
           inputRef.current.focus();
-        }
-        
-      }, [isEditing]);
+        }    
+    }, [isEditing]);
+
     const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
 
-
-    
-
-
     function handleForm({ value, name }) {
-        setForm({
-            [name]: value
-        });
+        setForm({[name]: value});
     }
 
-    function handleSendForm(e)
-    {
+    function handleSendForm(e){
         e.preventDefault();
         setIsEditing(false);
         
         const requisicao = updatePost(token.token, form.description, data.link, data.id);
 
-        requisicao.then((e) => 
-        {
+        requisicao.then((e) => {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             setForm({
@@ -64,19 +54,13 @@ export default function Post(props){
             });
         });
         requisicao.catch((e) => {
-            
             alert("updatePost deu errado " + e);
             setIsEditing(true);
         });
-
-        //UPDATE DO POST COM OBJETO FORM.description
-
     }
 
-    function handleKeyDown(e)
-    {
-        if (e.keyCode === 27) 
-        {
+    function handleKeyDown(e){
+        if (e.keyCode === 27){
             e.preventDefault();
             setIsEditing(false);
             setForm({
@@ -97,7 +81,6 @@ export default function Post(props){
         }
 
         if(action === 'dislike') {
-
             removeLike(token.token, data.id)
             .then((res)=> {
                 console.log(res.status);
@@ -112,32 +95,27 @@ export default function Post(props){
 
     }
 
-    function openModal() 
-    {
+    function openModal() {
         setIsOpen(true);
     }
      
-    function closeModal() 
-    {
+    function closeModal() {
         setIsOpen(false);
     }
 
-    function deleteP()
-    {
+    function deleteP(){
         setButton("none");
         setloading("loading...");
         const requisicao = deletePost(token.token, data.id);
 
-        requisicao.then((e) => 
-        {
+        requisicao.then((e) => {
             props.setAtt(props.att+1);
             setAttpage(props.att+1);
             closeModal();
             setButton("flex");
             setloading("Are you sure you want to delete this post?");
         });
-        requisicao.catch((e) => {
-            
+        requisicao.catch((e) => {  
             alert("deletePost deu errado " + e);
             closeModal();
             setButton("flex");
@@ -201,7 +179,7 @@ export default function Post(props){
                     ):(
                         <Text><ReactTagify 
                         tagStyle={tagStyle} 
-                        tagClicked={(tag)=> alert(tag)}>
+                        tagClicked={(tag)=> navigate(`/hashtag/${tag.substring(1)}`)}>
                         <p>
                           {data.description}
                         </p>
