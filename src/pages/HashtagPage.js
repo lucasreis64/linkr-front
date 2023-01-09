@@ -18,7 +18,6 @@ export default function HashtagPage(){
     const [att, setAtt] = useState(0);
     const [status, setStatus] = useState(null);
     
-
     useEffect(() => {
         getHashtagPage(token.token, hashtag)
         .then((res)=> {
@@ -30,12 +29,11 @@ export default function HashtagPage(){
         .catch()
     }, [att]);
 
-
     return (
         <>
             <NavBar></NavBar>
             <Body>     
-            <T><h1>title</h1></T>  
+            <T><h1>#{hashtag}</h1></T>  
             <Box>
             <TimelineContainer> 
                 <PostsContainer>
@@ -82,9 +80,10 @@ const Body = styled.div`
     display: flex;
     box-sizing: border-box;
     word-break: break-word;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     margin-top: 100px;
+    margin-left: 20%;
     width: 100%;
 `
 
