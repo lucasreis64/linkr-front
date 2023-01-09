@@ -13,7 +13,10 @@ export default function HashtagPage(){
 
     useEffect(() => {
         axios.get(URLS.HASHTAG + hashtag)
-        .then(response => setHashtagPosts(response.data))
+        .then(response => {
+            setHashtagPosts(response.data)
+            console.log(response.data)
+        })
         .catch(e => console.log(e));
     })
 

@@ -31,7 +31,7 @@ export default function Trending(){
             <Topo>
                 <h1>trending</h1>
             </Topo>
-           {trends.map((trend, index) => <Link key={index} to={`/hashtag/:${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
+           {trends.map((trend, index) => <Link key={index} to={`/hashtag/${trend.hashtag}`}><li># {trend.hashtag}</li></Link>)}
         </TrendContainer>
         </>
     )
