@@ -5,12 +5,14 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import { MutatingDots } from "react-loader-spinner";
 import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { URLS } from "../assets/constants/constants";
 import { contexto } from "../context/userContext";
 import { getHashtagPage } from "../service/api";
 
 export default function HashtagPage(){
+    const { token } = useContext(contexto);
     const { hashtag } = useParams();
     const [hashtagPosts, setHashtagPosts] = useState([]);
     const [userData, setUserData] = useState({});
@@ -35,7 +37,7 @@ export default function HashtagPage(){
         <>
             <NavBar></NavBar>
             <Body>     
-            <T><h1>hashtagPosts</h1></T>  
+            <T><h1>title</h1></T>  
             <Box>
             <TimelineContainer> 
                 <PostsContainer>

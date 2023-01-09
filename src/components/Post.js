@@ -7,17 +7,20 @@ import { postLike, removeLike } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
 import Modal from "react-modal";
+import LikeTooltip from "./Tooltip";
 Modal.setAppElement('#root');
 
 export default function Post(props){
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
-    const [isLiked, setIsLiked] = useState([...data.likes_users].includes(user.username));
+    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username));
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [button, setButton] = useState("flex");
     const [loading, setloading] = useState("Are you sure you want to delete this post?");
+    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
+    const [message, setMessage] = useState(likesCount > 0 ? updateLikeTooltip() : '');
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
     console.log(data.user_id + " " + user.id)
@@ -36,8 +39,6 @@ export default function Post(props){
       }, [isEditing]);
     
     data.likes_count = data.likes_users.length;
-    const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
-
 
     function handleForm({ value, name }) {
         setForm({
@@ -89,6 +90,7 @@ export default function Post(props){
             .then((res)=> {
                 console.log(res.status);
                 setLikesCount(likesCount+1);
+                setMessage(updateLikeTooltip());
             })
             .catch()
         }
@@ -99,6 +101,7 @@ export default function Post(props){
             .then((res)=> {
                 console.log(res.status);
                 setLikesCount(likesCount-1);
+                setMessage(updateLikeTooltip());
             })
             .catch()
         }
@@ -141,6 +144,58 @@ export default function Post(props){
             setloading("Are you sure you want to delete this post?");
         });
     }
+    
+    function updateLikeTooltip(){
+        console.log(data?.likes_users);
+        let param1, param2, param3 = '';
+        
+        if(isLiked){
+            param1 = 'Você';
+            
+            if(likesCount > 1){
+                param2 = (([...data?.likes_users]?.filter((i) => i !== user.username))[0]);
+                
+            }
+            
+        }
+
+        if(!isLiked){
+           
+            param1 = data?.likes_users[0];
+            if(likesCount > 1){
+                param2 = data?.likes_users[1];
+                
+            }
+            
+        }
+
+        if(likesCount > 2){
+            const number = parseInt(likesCount)-2;
+            param2 = ', ' + param2;
+            param3 = ' e outras ' +number+ ' pessoas';
+            
+        }
+
+        if(likesCount === 2){
+            param2 = ' e ' + param2;
+            
+        }
+
+
+        if(param1 === undefined || param1 === null){
+            param1 = '';
+        }
+        if(param2 === undefined || param2 === null){
+            param2 = '';
+        }
+        if(param3 === undefined || param3 === null){
+            param3 = '';
+        }
+        //console.log(param1, param2, param3 )
+
+        return ''+param1+param2+param3;
+
+    }
 
     return (
         <>
@@ -153,7 +208,14 @@ export default function Post(props){
                         ) : (
                             <FaRegHeart cursor={"pointer"} onClick={() => tapLike('like')} />
                         )}
-                        <div className="like-count">{likesCount > 0 ? `${likesCount} likes` : null}</div>
+                        <div>
+                           {likesCount > 0 ?
+                                <LikeTooltip 
+                                    key={data.id}
+                                    data={{message, likesCount, id: data.id}}
+                                /> : ''
+                            }        
+                        </div>
                     </div>
                 </div>
                 <div className="right">
@@ -198,7 +260,7 @@ export default function Post(props){
                     ):(
                         <Text><ReactTagify 
                         tagStyle={tagStyle} 
-                        tagClicked={(tag)=> alert(tag)}>
+                        tagClicked={(tag)=> navigate(`/hashtag/${tag.substring(1)}`)}>
                         <p>
                           {data.description}
                         </p>
@@ -206,7 +268,7 @@ export default function Post(props){
                     )}
                     <button type="submit" className="hidden"></button>
                 </Form>
-                <a href={data.link_metadata?.url} className={
+                <a href={data.link_metadata?.url} target="_blank" rel="noreferrer" className={
                         data.link_metadata?.url !== undefined
                         && data.link_metadata?.url !== null
                         && data.link_metadata?.url !== '' ?
@@ -342,13 +404,15 @@ const PostContainer = styled.div`
             flex-direction: column;
             align-items: center;
             font-size: 19px;
+            text-align: center;
 
             .like-count{
-                width: 100%;
+                width: 60%;
                 margin-top: 5px;
                 font-size: 11px;
                 line-height: 13px;
             }
+           
         }
     }
 

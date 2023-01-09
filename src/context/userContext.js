@@ -8,6 +8,7 @@ export const Context = (props) => {
     const [token, setToken] = useState(
         JSON.parse(localStorage?.getItem("userInfo"))
     );
+    const [userData, setUserData] = useState({});
 
     return (
         <contexto.Provider
@@ -18,6 +19,8 @@ export const Context = (props) => {
                 setPermanecerConectado,
                 attpage,
                 setAttpage,
+                userData,
+                setUserData
             }}
         >
             {props.children}
