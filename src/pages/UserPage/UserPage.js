@@ -37,7 +37,12 @@ export default function UserPage(){
                         <h1>{userData.username}'s Posts</h1>
                     </div>
                     {userData !== "loading" ?  (
-                        userData.user_posts.map(p => <Post att={att} setAtt={setAtt} token={token} key={p.id} data={{...p, ...userData, 'user_id': id}} user={{'id': id}}/>)
+                        userData.user_posts.map(p => <Post att={att} 
+                                                            setAtt={setAtt} 
+                                                            token={token} 
+                                                            key={p.id} 
+                                                            data={{...p, ...userData, 'user_id': id}} 
+                                                            user={{'id': token.id}}/>)
                     ):(
                         <div className="loader-container">
                             <MutatingDots 
