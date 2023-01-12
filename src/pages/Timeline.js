@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import NewPost from "../components/NewPost";
 import Posts from "../components/Posts";
 import Trending from "../components/Trending";
+import reload from "../assets/images/reload.png"
 
 export default function Timeline(){
     return (
@@ -13,6 +14,10 @@ export default function Timeline(){
             <Box>
             <TimelineContainer>                 
                 <NewPost></NewPost>
+                <ReloadBox>
+                    <p>12 new posts, load more!</p> 
+                    <img className="reload" src={reload} alt="reload"/>
+                </ReloadBox>
                 <Posts></Posts>
             </TimelineContainer>
             <Trending/>
@@ -76,3 +81,20 @@ const T = styled.div`
     color: white;
     font-weight: 700;
 `;
+
+const ReloadBox = styled.div`
+    height: 60px;
+    background-color: #1877F2;
+    border-radius: 12px;
+    margin: 20px 0;
+    display: none;
+    //display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        color: white;
+        font-family: 'Lato', sans-serif;
+        margin-right: 10px;
+    }
+`
