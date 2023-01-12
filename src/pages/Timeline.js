@@ -87,7 +87,8 @@ const ReloadBox = styled.div`
     background-color: #1877F2;
     border-radius: 12px;
     margin: 20px 0;
-    display: flex;
+    display: none;
+    //display: flex;
     justify-content: center;
     align-items: center;
 
