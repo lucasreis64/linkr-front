@@ -8,6 +8,10 @@ export const Context = (props) => {
     const [token, setToken] = useState(
         JSON.parse(localStorage?.getItem("userInfo"))
     );
+
+    const [displayReload, setDisplayReload] = useState(false);
+    const [att, setAtt] = useState(0);
+    const [count, setCount] = useState(0)
     const [userData, setUserData] = useState(
         JSON.parse(localStorage?.getItem("userInfo"))?.userData
     );
@@ -22,7 +26,13 @@ export const Context = (props) => {
                 attpage,
                 setAttpage,
                 userData,
-                setUserData
+                setUserData,
+                displayReload,
+                setDisplayReload,
+                att,
+                setAtt,
+                count,
+                setCount
             }}
         >
             {props.children}
