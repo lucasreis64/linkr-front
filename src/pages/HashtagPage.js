@@ -84,7 +84,7 @@ const Body = styled.div`
     display: flex;
     box-sizing: border-box;
     word-break: break-word;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     margin-top: 54px;
     width: 100%;
