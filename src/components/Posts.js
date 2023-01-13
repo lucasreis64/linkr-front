@@ -5,52 +5,92 @@ import Post from "./Post";
 import { Oval } from "react-loader-spinner";
 import { getTimeline } from "../service/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useInterval from 'use-interval'
 
 export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
-    const [att, setAtt] = useState(0);
-    const { token, userData, setUserData} = useContext(contexto);
+    const { token, userData, setDisplayReload, att, setAtt, setCount } = useContext(contexto);
+    const [newPosts, setNewPosts] = useState([]);
     const [status, setStatus] = useState(null);
+    const [offset, setOffset] = useState(10);
+    const [hasMore, setHasMore] = useState(true);
 
     const message1 = 'An error occured while trying to fetch the posts, please refresh the page';
     const message2 = 'The are no posts yet';
 
     useEffect(() => {
-        getTimeline(token?.token)
+        getTimeline(token?.token, 0)
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
-            setStatus(res.status);
         })
         .catch()
     }, [att]);
 
-    const fetchData = () =>{
+    const fetchData = () =>{ // pega posts mais antigos quando user scrolla pagina
         //API CALL
-        getTimeline(token.token)
+        console.log("Hi " + offset)
+        getTimeline(token.token, offset)
         .then((res)=> {
             setLoading(false);
-            setPosts(res.data.data);
-            setStatus(res.status);
+            setPosts([...posts, ...res.data.data]);
+            if(res.data.data.length < 10)
+                setHasMore(false);
+            setOffset(offset + 10)
         })
         .catch()
     }
-    
+
+    useInterval(() => { //veriica se existem novos posts
+        getTimeline(token.token, offset)
+        .then((res)=> {
+            setNewPosts(res.data.data);
+            console.log("antes", newPosts)
+
+            for(let i=0; i<newPosts.length; i++){
+                if(newPosts[i].id <= posts[0].id){
+                    let newArr = newPosts.splice(0, i)
+                    setNewPosts(newArr)
+                    return;
+                }
+            }
+
+            if (newPosts.length > 0){
+                setCount(newPosts.length)
+                setDisplayReload(true)
+            }
+            console.log(posts)
+            console.log("depois", newPosts)
+        })
+        .catch()
+    }, [15000])
+
+    const getMessage = () => {
+        if(status !== 200){
+            return message1;
+        }
+        return message2;
+    }
+
     return(
         <>
             <PostsContainer>
                 <InfiniteScroll
                     dataLength={posts.length}
                     next={fetchData}
-                    hasMore={true}
-                    loader={<Oval 
+                    hasMore={hasMore}
+                    loader={
+                        <div className="loader">
+                        <Oval 
                         color="#6D6D6D"
-                        secondaryColor="#5E5E5E"
-                    />}
+                        secondaryColor="#5E5E5E"/>
+                        <p>Loading more posts</p>
+                        </div>
+                        }
                     endMessage={
                         <p style={{ textAlign: 'center' }}>
-                        <b>Yay! You have seen it all</b>
+                        <h4>Yay! You have seen it all</h4>
                         </p>
                     }
                 >
@@ -78,7 +118,7 @@ export default function Posts(){
 
 const PostsContainer = styled.div`
     width: 611px;
-    margin-top: 29px;
+    margin-top: 19px;
 
     :last-child{
         margin-bottom: 50px;
@@ -93,6 +133,23 @@ const PostsContainer = styled.div`
         letter-spacing: 0.05em;
 
         color: #FFFFFF;
+    }
+
+    .loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        p {
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 22px;
+            line-height: 26px;
+            letter-spacing: 0.05em;
+
+            color: #6D6D6D;
+
+        }
     }
 
     @media screen and (max-width: 600px) {
