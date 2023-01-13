@@ -106,11 +106,6 @@ export default function Post(props){
         }
     }
 
-    function afterOpenModal() 
-    {
-
-    }
-
     function openModal() 
     {
         setIsOpen(true);
@@ -217,7 +212,6 @@ export default function Post(props){
                             <FaTrash cursor={"pointer"} onClick={() => openModal()} />
                             <Modal
                             isOpen={modalIsOpen}
-                            onAfterOpen={afterOpenModal}
                             onRequestClose={closeModal}
                             contentLabel="onRequestClose Example"
                             style={customStyles}
