@@ -46,8 +46,7 @@ export default function Post(props){
         });
     }
 
-    function handleSendForm(e)
-    {
+    function handleSendForm(e){
         e.preventDefault();
         setIsEditing(false);
         
@@ -71,10 +70,8 @@ export default function Post(props){
 
     }
 
-    function handleKeyDown(e)
-    {
-        if (e.keyCode === 27) 
-        {
+    function handleKeyDown(e){
+        if (e.keyCode === 27) {
             e.preventDefault();
             setIsEditing(false);
             setForm({
@@ -107,13 +104,11 @@ export default function Post(props){
         }
     }
 
-    function openModal() 
-    {
+    function openModal() {
         setIsOpen(true);
     }
      
-    function closeModal() 
-    {
+    function closeModal() {
         setIsOpen(false);
     }
 

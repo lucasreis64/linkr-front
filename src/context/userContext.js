@@ -9,6 +9,9 @@ export const Context = (props) => {
         JSON.parse(localStorage?.getItem("userInfo"))
     );
     const [userData, setUserData] = useState({});
+    const [displayReload, setDisplayReload] = useState(false);
+    const [att, setAtt] = useState(0);
+    const [count, setCount] = useState(0)
 
     return (
         <contexto.Provider
@@ -20,7 +23,13 @@ export const Context = (props) => {
                 attpage,
                 setAttpage,
                 userData,
-                setUserData
+                setUserData,
+                displayReload,
+                setDisplayReload,
+                att,
+                setAtt,
+                count,
+                setCount
             }}
         >
             {props.children}
