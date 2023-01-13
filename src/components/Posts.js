@@ -5,12 +5,13 @@ import Post from "./Post";
 import { Oval } from "react-loader-spinner";
 import { getTimeline } from "../service/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useInterval from 'use-interval'
 
 export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
-    const [att, setAtt] = useState(0);
-    const { token, userData, setUserData} = useContext(contexto);
+    const { token, userData, setUserData, setDisplayReload, att, setAtt, setCount } = useContext(contexto);
+    const [newPosts, setNewPosts] = useState([]);
     const [status, setStatus] = useState(null);
 
     const message1 = 'An error occured while trying to fetch the posts, please refresh the page';
@@ -36,7 +37,33 @@ export default function Posts(){
         })
         .catch()
     }
-    
+
+    useInterval(() => {
+        getTimeline(token.token)
+        .then((res)=> {
+            setNewPosts(res.data.data);
+
+            for(i=0; i<newPosts.length; i++){
+                if(newPosts[i].created_at <= posts[0].created_at){
+                    var newArr = newPosts.splice(0, i)
+                    setNewPosts(newArr)
+                    return
+                }
+            }
+
+            setCount(newPosts.length)
+            setDisplayReload(true)
+        })
+        .catch()
+    }, [15000])
+
+    const getMessage = () => {
+        if(status !== 200){
+            return message1;
+        }
+        return message2;
+    }
+
     return(
         <>
             <PostsContainer>

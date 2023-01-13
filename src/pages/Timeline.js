@@ -4,8 +4,12 @@ import NewPost from "../components/NewPost";
 import Posts from "../components/Posts";
 import Trending from "../components/Trending";
 import reload from "../assets/images/reload.png"
+import { useContext } from "react";
+import { contexto } from "../context/userContext";
 
 export default function Timeline(){
+    const { displayReload, att, setAtt, count } = useContext(contexto);
+
     return (
         <>
             <NavBar></NavBar>
@@ -14,10 +18,10 @@ export default function Timeline(){
             <Box>
             <TimelineContainer>                 
                 <NewPost></NewPost>
-                <ReloadBox>
-                    <p>12 new posts, load more!</p> 
+                {displayReload && <ReloadBox onClick={setAtt(att+1)}>
+                    <p>`${count} new posts, load more!`</p> 
                     <img className="reload" src={reload} alt="reload"/>
-                </ReloadBox>
+                </ReloadBox>}
                 <Posts></Posts>
             </TimelineContainer>
             <Trending/>
@@ -86,8 +90,7 @@ const ReloadBox = styled.div`
     background-color: #1877F2;
     border-radius: 12px;
     margin: 20px 0;
-    display: none;
-    //display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 
