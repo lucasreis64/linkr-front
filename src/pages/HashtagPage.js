@@ -66,9 +66,9 @@ export default function HashtagPage(){
 
 const Box = styled.div`
 	display: flex;
-    position: absolute;
     box-sizing: border-box;
     word-break: break-word;
+    margin: 0 auto;
     margin-top: 75px;
 `;
 
