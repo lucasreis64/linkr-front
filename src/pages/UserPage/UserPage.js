@@ -3,7 +3,7 @@ import styled from "styled-components";
 import NavBar from "../../components/NavBar";
 import Post from "../../components/Post";
 import Trending from "../../components/Trending";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import React from "react";
 import { useContext } from "react";
 import { API_BASE_URL } from "../../assets/constants/constants";
@@ -18,6 +18,7 @@ export default function UserPage(){
     const [userData, setUserData] = React.useState("loading");
     const [att, setAtt] = React.useState(0);
     const [loading, setLoading] = React.useState(false)
+    const navigate = useNavigate();
 
     const config = {
         "headers": {
@@ -62,7 +63,7 @@ export default function UserPage(){
                         </button> : <></>}
                     </div>
                     {userData !== "loading" ?  (
-                        userData.user_posts.map(p => <Post att={att} setAtt={setAtt} token={token} key={p.id} data={{...p, ...userData, 'user_id': loggedUserData.id}} user={{'id': id}}/>)
+                        userData.user_posts.map(p => <Post att={att} setAtt={setAtt} token={token} key={p.id} data={{...p, ...userData, 'user_id': id}} user={loggedUserData}/>)
                     ):(
                         <div className="loader-container">
                             <MutatingDots 

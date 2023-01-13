@@ -3,7 +3,7 @@ import logo from "../assets/images/logo.svg"
 import down from "../assets/images/down.png"
 import up from "../assets/images/up.png"
 import {DebounceInput} from 'react-debounce-input';
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import Suggestion from "./Suggestion";
 import axios from "axios";
 import { API_BASE_URL } from "../assets/constants/constants";
@@ -17,8 +17,15 @@ export default function NavBar(){
     const [suggestions, setSuggestions] = useState([])
     const [logoutMenu, setLogoutMenu] = useState(false)
     const {setToken, token, userData} = useContext(contexto)
+    console.log(userData)
     const navigate = useNavigate()
     
+    React.useEffect(() => {
+        if(!token) {
+            navigate('/')
+        }
+    }, [token])
+
     function handleChange(e) {
         const new_search = e.target.value;
         setSearch(new_search);

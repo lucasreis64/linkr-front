@@ -8,7 +8,9 @@ export const Context = (props) => {
     const [token, setToken] = useState(
         JSON.parse(localStorage?.getItem("userInfo"))
     );
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(
+        JSON.parse(localStorage?.getItem("userInfo")).userData
+    );
 
     return (
         <contexto.Provider

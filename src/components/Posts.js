@@ -16,7 +16,7 @@ export default function Posts(){
     const message2 = 'The are no posts yet';
 
     useEffect(() => {
-        getTimeline(token.token)
+        getTimeline(token?.token)
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
