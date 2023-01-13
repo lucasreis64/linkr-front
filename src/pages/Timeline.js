@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { contexto } from "../context/userContext";
 
 export default function Timeline(){
-    const { displayReload, att, setAtt, count } = useContext(contexto);
+    const { displayReload, setDisplayReload, att, setAtt, count } = useContext(contexto);
 
     return (
         <>
@@ -18,7 +18,10 @@ export default function Timeline(){
             <Box>
             <TimelineContainer>                 
                 <NewPost></NewPost>
-                {displayReload && <ReloadBox onClick={setAtt(att+1)}>
+                {displayReload && 
+                <ReloadBox 
+                    onClick={() => {setAtt(att+1)
+                                    setDisplayReload(false)}}>
                     <p>{count} new posts, load more!</p> 
                     <img className="reload" src={reload} alt="reload"/>
                 </ReloadBox>}

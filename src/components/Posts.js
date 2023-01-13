@@ -51,23 +51,22 @@ export default function Posts() {
                 setNewPosts(res.data.data);
                 console.log("antes", newPosts);
 
-                for (let i = 0; i < newPosts.length; i++) {
-                    if (newPosts[i].id <= posts[0].id) {
-                        let newArr = newPosts.splice(0, i);
-                        setNewPosts(newArr);
-                        return;
-                    }
+            for(let i=0; i<newPosts.length; i++){
+                if(newPosts[i].id <= posts[0].id){
+                    let newArr = newPosts.splice(0, i)
+                    setNewPosts(newArr)
+                    return;
                 }
-
-                if (newPosts.length > 0) {
-                    setCount(newPosts.length);
-                    setDisplayReload(true);
-                }
-                console.log(posts);
-                console.log("depois", newPosts);
-            })
-            .catch();
-    }, [15000]);
+            }
+            if (newPosts.length > 0){
+                setCount(newPosts.length)
+                setDisplayReload(true)
+            }
+            console.log(posts)
+            console.log("depois", newPosts)
+        })
+        .catch()
+    }, [15000])
 
     const getMessage = () => {
         if (status !== 200) {
