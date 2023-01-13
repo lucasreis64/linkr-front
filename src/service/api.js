@@ -12,9 +12,10 @@ export function getTrendings(){
     return requisition;
 }
 
-export function getTimeline(token){
+export function getTimeline(token, offset){
+    console.log(offset)
     const requisition = axios.get(
-        `${URL}/timeline`, 
+        `${URL}/timeline?offset=${offset}`, 
         headerCreator(token),
         );
 
