@@ -24,7 +24,6 @@ export default function HashtagPage(){
         .then((res)=> {
             console.log(res.data);
             setHashtagPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
             setTemPosts(true);
         })

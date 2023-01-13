@@ -17,11 +17,11 @@ export default function NavBar(){
     const [suggestions, setSuggestions] = useState([])
     const [logoutMenu, setLogoutMenu] = useState(false)
     const {setToken, token, userData} = useContext(contexto)
-    console.log(userData)
+    console.log("Oi" + userData)
     const navigate = useNavigate()
     
     React.useEffect(() => {
-        if(!token) {
+        if(!token || !userData) {
             navigate('/')
         }
     }, [token])
@@ -126,18 +126,18 @@ const SearchContainer = styled.div`
     max-width: 563px;
     width: 100%;
     position: relative;
+    
     .suggestions {
         display: ${props => props.suggestionsDisplay};
-        max-width: 563px;
         min-height: 60px;
-        width: 100%;
         position: fixed;
+        max-width: 563px;
+        width: calc(100vw - 228px);
         top: 53px;
         z-index : 1;
         border-radius: 8px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        width: 100%;
         padding: 17px;
         background-color: #E7E7E7;
         -webkit-animation: slide-top 0.5s ease-in reverse both;
@@ -149,9 +149,6 @@ const SearchContainer = styled.div`
         right: 13px !important;
         top: 11px !important;
         z-index: 2;
-        @media (max-width: 600px) {
-        display: none;
-    }
     }
     input {
         width: 100%;
@@ -167,9 +164,6 @@ const SearchContainer = styled.div`
         line-height: 23px;  
         border: 0px;
         outline: none;
-        @media (max-width: 600px) {
-        display: none;
-    }
     }
     @media (min-width: 600px) {
         display: ${props => props.origin === "desktop" ? "block" : "none"};
@@ -181,6 +175,7 @@ const SearchContainer = styled.div`
         input {
             width: 95vw;
             margin-top: 10px;
+            display: flex !important;
         }
         ion-icon {
             font-size: 20px;

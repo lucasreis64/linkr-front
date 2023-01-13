@@ -9,7 +9,7 @@ export const Context = (props) => {
         JSON.parse(localStorage?.getItem("userInfo"))
     );
     const [userData, setUserData] = useState(
-        JSON.parse(localStorage?.getItem("userInfo")).userData
+        JSON.parse(localStorage?.getItem("userInfo"))?.userData
     );
 
     return (
