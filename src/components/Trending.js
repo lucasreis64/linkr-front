@@ -38,8 +38,9 @@ export default function Trending(){
 }
 const Topo = styled.div`
     border-bottom: 1px solid #484848;
-    width: 100%;
-    
+    width: 300px;
+    position: sticky;    
+    top: 100px;
 `;
 const TrendContainer = styled.div`
     display: flex;
@@ -49,7 +50,8 @@ const TrendContainer = styled.div`
     height: 400px;
     background: #171717;
     border-radius: 16px;
-    position: fixed;
+    position: sticky;
+    top: 100px;
     a{
         text-decoration: none;
     }
@@ -75,21 +77,10 @@ const TrendContainer = styled.div`
         margin-left: 15px;
         color: #FFFFFF;
     }
-    @media (max-width: 1205px)
+    @media (max-width: 960px)
     {
         display: none;
 	}
-    @media (min-width: 1150px)
-    {
-        margin-left: 51%;
-	}
-    @media (min-width: 1360px)
-    {
-        margin-left: 46%;
-	}
-    @media (min-width: 1550px)
-    {
-        margin-left: 40%;
-	}
+    margin-left: 25px;
 `;
 

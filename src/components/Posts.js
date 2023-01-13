@@ -167,3 +167,4 @@ const PostsContainer = styled.div`
         max-width: 100vw;
     }
 `;
+

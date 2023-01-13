@@ -33,7 +33,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-	background-color: #707070;
+	background-color: #333333;
 	box-sizing: border-box;
 }
 ol, ul {
