@@ -20,6 +20,7 @@ export default function Post(props){
     const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username) || [...data?.likes_users]?.includes(user.id));
     const [shares, setShares] = useState({});
     const [isRepost, setIsRepost] = useState(false);
+    const [isRepostBy, setIsRepostBy] = useState(false);
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -29,6 +30,8 @@ export default function Post(props){
     const [likesCount, setLikesCount] = useState(parseInt(data.likes_count));
     const [message, setMessage] = useState(likesCount > 0 ? updateLikeTooltip() : '');
     const [msgRepost, setMsgRepost] = useState("");
+    const [border, setBorder] = useState("none");
+    const [uRepost, setuRepost] = useState("");
     const [attRepost, setAttRepost] = useState(false);
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
@@ -46,6 +49,27 @@ export default function Post(props){
         }
         
       }, [isEditing]);
+
+      useEffect(() => {
+        if (data.repostBy != undefined) 
+        {
+          setIsRepostBy(true);
+          setBorder("0px 0px 16px 16px");
+          if(data.repostBy === user.username)
+          {
+            setuRepost("Voce");
+          }
+          else
+          {
+            setuRepost(data.repostBy);
+          }
+        }
+        else
+        {
+            setIsRepostBy(false);
+        }
+        
+      }, [props.att]);
 
       useEffect(() => {
         let isApiSubscribed = true;
@@ -306,7 +330,15 @@ export default function Post(props){
 
     return (
         <>
-            <PostContainer>
+            {isRepostBy? (
+                            <Repost>
+                                <BiRepost cursor={"pointer"} color="white" /> <h1>Re-post by {uRepost}</h1>
+                            </Repost>             
+                           ): (
+                            ''
+                           )} 
+            <PostContainer border = {border}>
+            
                 <div className="left">
                     <img className="profile-picture" src={data.profile_picture} alt="user" onClick={() => navigate('/users/' + data.user_id)}/>
                     <div className="like-actions">
@@ -445,6 +477,27 @@ const customStyles = {
     },
   };
 
+  const Repost = styled.div`
+    display: flex;
+    width: 100%;
+    height: 30px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding: 10px;
+    background: #1E1E1E;
+    border-radius: 16px 16px 0px 0px;
+       h1{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        margin: 5px;
+        color: #FFFFFF;
+       }
+`;
+
 const Box = styled.div`
     display: flex;
     width: 597px;
@@ -516,7 +569,7 @@ const PostContainer = styled.div`
     font-family: 'Lato', sans-serif;
     margin-bottom: 16px;
     box-sizing: border-box;
-
+    border-radius: ${props => props.border};
     a{
         text-decoration: none;
     }
