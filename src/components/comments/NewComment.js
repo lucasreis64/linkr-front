@@ -10,7 +10,6 @@ export default function NewComment({ post_id, reload, reloadComments }) {
     const { profile_picture, id } = token.userData;
 
     function post() {
-        console.log("oi");
         if (content.length === 0) return;
         postComment(token.token, post_id, id, content)
             .then((res) => {
