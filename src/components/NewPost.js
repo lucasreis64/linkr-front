@@ -3,12 +3,14 @@ import axios from 'axios'
 import { useState, useContext } from "react"
 import { contexto } from "../context/userContext"
 import { URLS } from "../assets/constants/constants";
+import { useNavigate } from "react-router-dom";
 
 export default function NewPost(){
     const [loading, setLoading] = useState(false)
     const [url, setUrl] = useState(undefined)
     const [text, setText] = useState("")
     const { token, userData } = useContext(contexto)
+    const navigate = useNavigate();
 
     function publishPost(e) {
         e.preventDefault();
@@ -31,7 +33,7 @@ export default function NewPost(){
         <>
         <NewPostContainer>
             <div className="left">
-                <img className="profile-picture" src={userData.profile_picture} alt="user"/>
+                <img className="profile-picture" src={userData.profile_picture} alt="user" onClick={() => navigate(`/users/${userData.id}`)}/>
             </div>
             <div className="right">
                 <h2>What are you going to share today?</h2>
