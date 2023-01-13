@@ -2,12 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import styled from "styled-components";
 import { contexto } from "../../context/userContext";
-import { getComments } from "../../service/api";
 import Comment from "./Comment";
 import NewComment from "./NewComment";
 
 export default function CommentsSection({ post_id, comment, reloadComments, setReloadComments }) {
-    const { token } = useContext(contexto);
 
     return (
         <CommentsContainer>

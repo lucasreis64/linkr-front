@@ -1,3 +1,5 @@
+import commentIcon from "../assets/images/comment.png";
+import CommentsSection from "./comments/CommentsSection";
 import styled from "styled-components";
 import { useState, useContext, useEffect, useRef } from "react";
 import { contexto } from "../context/userContext";
@@ -14,14 +16,14 @@ import {
 } from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
-import commentIcon from "../assets/images/comment.png";
-import CommentsSection from "./comments/CommentsSection";
 import Modal from "react-modal";
 import LikeTooltip from "./Tooltip";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 Modal.setAppElement("#root");
 let msgR = "";
+
+
 
 export default function Post(props) {
     const { user, data, token } = { ...props };

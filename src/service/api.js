@@ -105,7 +105,7 @@ export function postShare(token, post_id){
         headerCreator(token)
         );
 
-    return requisition;
+        return requisition;
 }
 
 
@@ -116,5 +116,5 @@ export function removeShare(token, post_id){
         headerCreator(token)
         );
 
-    return requisition;
+        return requisition;
 }
