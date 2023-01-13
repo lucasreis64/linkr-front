@@ -17,7 +17,6 @@ export default function NavBar(){
     const [suggestions, setSuggestions] = useState([])
     const [logoutMenu, setLogoutMenu] = useState(false)
     const {setToken, token, userData} = useContext(contexto)
-    console.log("Oi" + userData)
     const navigate = useNavigate()
     
     React.useEffect(() => {

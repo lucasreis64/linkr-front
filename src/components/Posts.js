@@ -10,7 +10,7 @@ import useInterval from 'use-interval'
 export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
-    const { token, userData, setUserData, setDisplayReload, att, setAtt, setCount } = useContext(contexto);
+    const { token, userData, setDisplayReload, att, setAtt, setCount } = useContext(contexto);
     const [newPosts, setNewPosts] = useState([]);
     const [status, setStatus] = useState(null);
 
@@ -27,7 +27,7 @@ export default function Posts(){
         .catch()
     }, [att]);
 
-    const fetchData = () =>{
+    const fetchData = () =>{ // pega posts mais antigos quando user scrolla pagina
         //API CALL
         getTimeline(token.token)
         .then((res)=> {
@@ -38,24 +38,29 @@ export default function Posts(){
         .catch()
     }
 
-    useInterval(() => {
+    useInterval(() => { //veriica se existem novos posts
         getTimeline(token.token)
         .then((res)=> {
             setNewPosts(res.data.data);
+            console.log("antes", newPosts)
 
-            for(i=0; i<newPosts.length; i++){
+            for(let i=0; i<newPosts.length; i++){
                 if(newPosts[i].created_at <= posts[0].created_at){
-                    var newArr = newPosts.splice(0, i)
+                    var newArr = newPosts.splice(0, newPosts[i])
                     setNewPosts(newArr)
                     return
                 }
             }
 
-            setCount(newPosts.length)
-            setDisplayReload(true)
+            if (newPosts.length > 0){
+                setCount(newPosts.length)
+                setDisplayReload(true)
+            }
+            console.log(posts)
+            console.log("depois", newPosts)
         })
         .catch()
-    }, [15000])
+    }, [1500000])
 
     const getMessage = () => {
         if(status !== 200){
@@ -105,7 +110,7 @@ export default function Posts(){
 
 const PostsContainer = styled.div`
     width: 611px;
-    margin-top: 29px;
+    margin-top: 19px;
 
     :last-child{
         margin-bottom: 50px;

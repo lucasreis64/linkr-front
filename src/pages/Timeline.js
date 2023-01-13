@@ -19,7 +19,7 @@ export default function Timeline(){
             <TimelineContainer>                 
                 <NewPost></NewPost>
                 {displayReload && <ReloadBox onClick={setAtt(att+1)}>
-                    <p>`${count} new posts, load more!`</p> 
+                    <p>{count} new posts, load more!</p> 
                     <img className="reload" src={reload} alt="reload"/>
                 </ReloadBox>}
                 <Posts></Posts>

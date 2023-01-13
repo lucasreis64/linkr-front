@@ -39,7 +39,7 @@ export default function HashtagPage(){
                 <PostsContainer>  
                 <T>
                     <div/>
-                    <h1># {hashtag}</h1>
+                    <h1>#{hashtag}</h1>
                 </T>  
                 {temPosts ?  (
                         hashtagPosts.map(p => <Post 
