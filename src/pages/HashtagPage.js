@@ -24,7 +24,6 @@ export default function HashtagPage(){
         .then((res)=> {
             console.log(res.data);
             setHashtagPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
             setTemPosts(true);
         })
@@ -40,7 +39,7 @@ export default function HashtagPage(){
                 <PostsContainer>  
                 <T>
                     <div/>
-                    <h1># {hashtag}</h1>
+                    <h1>#{hashtag}</h1>
                 </T>  
                 {temPosts ?  (
                         hashtagPosts.map(p => <Post 

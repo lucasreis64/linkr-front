@@ -17,8 +17,8 @@ let msgR = "";
 export default function Post(props){
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
+    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username) || [...data?.likes_users]?.includes(user.id));
     const [shares, setShares] = useState({});
-    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username));
     const [isRepost, setIsRepost] = useState(false);
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
@@ -32,7 +32,6 @@ export default function Post(props){
     const [attRepost, setAttRepost] = useState(false);
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-    //console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
     
 
@@ -120,8 +119,7 @@ export default function Post(props){
         });
     }
 
-    function handleSendForm(e)
-    {
+    function handleSendForm(e){
         e.preventDefault();
         setIsEditing(false);
         
@@ -145,10 +143,8 @@ export default function Post(props){
 
     }
 
-    function handleKeyDown(e)
-    {
-        if (e.keyCode === 27) 
-        {
+    function handleKeyDown(e){
+        if (e.keyCode === 27) {
             e.preventDefault();
             setIsEditing(false);
             setForm({
@@ -223,13 +219,11 @@ export default function Post(props){
         });
     }
 
-    function openModal() 
-    {
+    function openModal() {
         setIsOpen(true);
     }
      
-    function closeModal() 
-    {
+    function closeModal() {
         setIsOpen(false);
     }
 
@@ -368,7 +362,7 @@ export default function Post(props){
                 </div>
                 <div className="right">
                     <div className="header">
-                        <Link to={`/users/${user.id}`} className="username">{data.username}</Link>
+                        <Link to={`/users/` + data.user_id} className="username">{data.username}</Link>
                         <div className={`menu-op ${isEditable ? '' : 'hidden'}`} >
                             <FaPen cursor={"pointer"} onClick={() => setIsEditing(true)} />
                             <FaTrash cursor={"pointer"} onClick={() => openModal()} />

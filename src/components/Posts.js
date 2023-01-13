@@ -2,42 +2,65 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { contexto } from "../context/userContext";
 import Post from "./Post";
-import { MutatingDots } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
 import { getTimeline } from "../service/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useInterval from 'use-interval'
 
 export default function Posts(){
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
-    const [att, setAtt] = useState(0);
-    const { token, userData, setUserData} = useContext(contexto);
+    const { token, userData, setDisplayReload, att, setAtt, setCount } = useContext(contexto);
+    const [newPosts, setNewPosts] = useState([]);
     const [status, setStatus] = useState(null);
 
     const message1 = 'An error occured while trying to fetch the posts, please refresh the page';
     const message2 = 'The are no posts yet';
 
     useEffect(() => {
-        getTimeline(token.token)
+        getTimeline(token?.token)
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
         })
         .catch()
     }, [att]);
 
-    const fetchData = () =>{
+    const fetchData = () =>{ // pega posts mais antigos quando user scrolla pagina
         //API CALL
         getTimeline(token.token)
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
         })
         .catch()
     }
+
+    useInterval(() => { //veriica se existem novos posts
+        getTimeline(token.token)
+        .then((res)=> {
+            setNewPosts(res.data.data);
+            console.log("antes", newPosts)
+
+            for(let i=0; i<newPosts.length; i++){
+                if(newPosts[i].created_at <= posts[0].created_at){
+                    var newArr = newPosts.splice(0, newPosts[i])
+                    setNewPosts(newArr)
+                    return
+                }
+            }
+
+            if (newPosts.length > 0){
+                setCount(newPosts.length)
+                setDisplayReload(true)
+            }
+            console.log(posts)
+            console.log("depois", newPosts)
+        })
+        .catch()
+    }, [1500000])
 
     const getMessage = () => {
         if(status !== 200){
@@ -53,7 +76,10 @@ export default function Posts(){
                     dataLength={posts.length}
                     next={fetchData}
                     hasMore={true}
-                    loader={<h4>Loading more posts...</h4>}
+                    loader={<Oval 
+                        color="#6D6D6D"
+                        secondaryColor="#5E5E5E"
+                    />}
                     endMessage={
                         <p style={{ textAlign: 'center' }}>
                         <b>Yay! You have seen it all</b>
@@ -61,7 +87,7 @@ export default function Posts(){
                     }
                 >
 
-                {posts && posts.length > 0 ?  (
+                {loading ? <></> : posts && posts.length > 0 ?  (
                     posts.map(p => <Post 
                         key={p.id} 
                         data={p} 
@@ -69,11 +95,11 @@ export default function Posts(){
                         setAtt={setAtt}
                         att={att}
                         token={token}/>)
-                ): (
-                    <div>{loading ? <MutatingDots 
-                        color="#FFFFFF"
-                        secondaryColor="#C6C6C6"
-                    /> : getMessage()}</div>
+                ) : (
+                   !userData.following_count ?
+                    <h4>Você ainda não seguiu ninguém. Siga alguém para ver suas publicações.</h4>
+                    :
+                    <h4>Seus amigos ainda não postaram nada. Siga mais pessoas para ver outras publicações.</h4>
                 )}
                 
                 </InfiniteScroll>
@@ -84,10 +110,21 @@ export default function Posts(){
 
 const PostsContainer = styled.div`
     width: 611px;
-    margin-top: 29px;
+    margin-top: 19px;
 
     :last-child{
         margin-bottom: 50px;
+    }
+
+    h4 {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 19px;
+        line-height: 23px;
+        letter-spacing: 0.05em;
+
+        color: #FFFFFF;
     }
 
     @media screen and (max-width: 600px) {
@@ -97,4 +134,4 @@ const PostsContainer = styled.div`
     @media screen and (max-width: 768px) {
         max-width: 100vw;
     }
-`
+`   
