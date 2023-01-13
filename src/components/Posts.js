@@ -45,10 +45,10 @@ export default function Posts(){
             console.log("antes", newPosts)
 
             for(let i=0; i<newPosts.length; i++){
-                if(newPosts[i].created_at <= posts[0].created_at){
-                    var newArr = newPosts.splice(0, newPosts[i])
+                if(newPosts[i].id <= posts[0].id){
+                    let newArr = newPosts.splice(0, i)
                     setNewPosts(newArr)
-                    return
+                    return;
                 }
             }
 
@@ -60,7 +60,7 @@ export default function Posts(){
             console.log("depois", newPosts)
         })
         .catch()
-    }, [1500000])
+    }, [15000])
 
     const getMessage = () => {
         if(status !== 200){
