@@ -2,26 +2,39 @@ import styled from "styled-components";
 import { useState, useContext, useEffect, useRef } from "react";
 import { contexto } from "../context/userContext";
 import { FaRegHeart, FaHeart, FaPen, FaTrash } from "react-icons/fa";
+import { BiRepost } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { getComments, postLike, removeLike } from "../service/api";
+import {
+    getShare,
+    removeShare,
+    postShare,
+    postLike,
+    removeLike,
+    getComments,
+} from "../service/api";
 import { deletePost, updatePost } from "../service/api";
 import { ReactTagify } from "react-tagify";
-import Modal from "react-modal";
-import LikeTooltip from "./Tooltip";
 import commentIcon from "../assets/images/comment.png";
 import CommentsSection from "./comments/CommentsSection";
+import Modal from "react-modal";
+import LikeTooltip from "./Tooltip";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 Modal.setAppElement("#root");
+let msgR = "";
 
 export default function Post(props) {
     const { user, data, token } = { ...props };
     const [form, setForm] = useState({ description: data.description });
+    const [shares, setShares] = useState({});
     const [isLiked, setIsLiked] = useState(
-        [...data?.likes_users]?.includes(user.username) ||
-            [...data?.likes_users]?.includes(user.id)
+        [...data?.likes_users]?.includes(user.username)
     );
+    const [isRepost, setIsRepost] = useState(false);
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalIsOpen2, setIsOpen2] = useState(false);
     const [button, setButton] = useState("flex");
     const [loading, setloading] = useState(
         "Are you sure you want to delete this post?"
@@ -31,6 +44,8 @@ export default function Post(props) {
         likesCount > 0 ? updateLikeTooltip() : ""
     );
     const [toggleComments, setToggleComments] = useState(false);
+    const [msgRepost, setMsgRepost] = useState("");
+    const [attRepost, setAttRepost] = useState(false);
     const { setAttpage } = useContext(contexto);
     const [comment, setComment] = useState(null);
     const [reloadComments, setReloadComments] = useState(false);
@@ -43,20 +58,81 @@ export default function Post(props) {
         cursor: "pointer",
     };
 
-    useEffect(
-        () => {
-            getComments(token.token, data.id)
-                .then((res) => {
-                    setComment(res.data);
-                })
-                .catch((error) => console.error(error));
+    useEffect(() => {
+        getComments(token.token, data.id)
+            .then((res) => {
+                setComment(res.data);
+            })
+            .catch((error) => console.error(error));
 
-            if (isEditing) {
-                inputRef.current.focus();
-            }
-        },
-        [reloadComments, isEditing]
-    );
+        if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [reloadComments, isEditing]);
+
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing]);
+
+    useEffect(() => {
+        let isApiSubscribed = true;
+        getShare(data.id)
+            .then((res) => {
+                if (isApiSubscribed) {
+                    setShares(res.data);
+                    let vc = false;
+                    if (res.data.length > 0) {
+                        setAttRepost(true);
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].username === user.username) {
+                                setIsRepost(true);
+                                vc = true;
+                            } else {
+                                msgR = res.data[i].username;
+                            }
+                        }
+                        if (vc === false) {
+                            if (res.data.length > 2) {
+                                setMsgRepost(
+                                    msgR +
+                                        ", " +
+                                        res.data[0].username +
+                                        " e outras " +
+                                        (res.data.length - 2) +
+                                        " pessoas"
+                                );
+                            } else if (res.data.length === 2) {
+                                setMsgRepost(
+                                    msgR + " e " + res.data[0].username
+                                );
+                            }
+                        }
+                        if (vc === true) {
+                            if (res.data.length === 1) {
+                                setMsgRepost("Você");
+                            } else if (res.data.length === 2) {
+                                setMsgRepost("Você e " + msgR);
+                            } else if (res.data.length > 2) {
+                                setMsgRepost(
+                                    "Você, " +
+                                        msgR +
+                                        " e outras " +
+                                        (res.data.length - 2) +
+                                        " pessoas"
+                                );
+                            }
+                        }
+                    }
+                }
+            })
+            .catch();
+
+        return () => {
+            isApiSubscribed = false;
+        };
+    }, [props.att]);
 
     data.likes_count = data.likes_users.length;
 
@@ -125,12 +201,57 @@ export default function Post(props) {
         }
     }
 
+    function postS() {
+        setButton("none");
+        setloading("loading...");
+        setAttRepost(false);
+        const req = postShare(token.token, data.id);
+        req.then((e) => {
+            props.setAtt(props.att + 1);
+            setAttpage(props.att + 1);
+            closeModal2();
+            setIsRepost(true);
+            setAttRepost(true);
+            setButton("flex");
+            setloading("Do you want to re-post this link?");
+        });
+        req.catch((e) => {
+            alert("sharePost deu errado " + e);
+            setButton("flex");
+            setloading("Do you want to re-post this link?");
+            setAttRepost(true);
+        });
+    }
+
+    function removeS() {
+        const requisicao = removeShare(token.token, data.id);
+        setAttRepost(false);
+        requisicao.then((e) => {
+            props.setAtt(props.att + 1);
+            setAttpage(props.att + 1);
+            setIsRepost(false);
+            setAttRepost(true);
+        });
+        requisicao.catch((e) => {
+            alert("removeShare deu errado " + e);
+            setAttRepost(true);
+        });
+    }
+
     function openModal() {
         setIsOpen(true);
     }
 
     function closeModal() {
         setIsOpen(false);
+    }
+
+    function openModal2() {
+        setIsOpen2(true);
+    }
+
+    function closeModal2() {
+        setIsOpen2(false);
     }
 
     function deleteP() {
@@ -244,6 +365,60 @@ export default function Post(props) {
                             {`${comment?.length} comments`}
                         </div>
                     </div>
+                    <div className="share-actions">
+                        {isRepost ? (
+                            <BiRepost
+                                cursor={"pointer"}
+                                color="red"
+                                onClick={() => removeS()}
+                            />
+                        ) : (
+                            <BiRepost
+                                cursor={"pointer"}
+                                onClick={() => openModal2()}
+                            />
+                        )}
+
+                        <div>
+                            {shares.length > 0 && attRepost === true ? (
+                                <>
+                                    <p
+                                        id={data.id + 0.5}
+                                        className="share-count"
+                                        data-tooltip-content={msgRepost}
+                                        data-tooltip-variant="light"
+                                    >
+                                        {shares.length} shares
+                                    </p>
+                                    <Tooltip
+                                        anchorId={data.id + 0.5}
+                                        place="bottom"
+                                        style={{ fontSize: "11px" }}
+                                    />
+                                </>
+                            ) : (
+                                ""
+                            )}
+                        </div>
+                        <Modal
+                            isOpen={modalIsOpen2}
+                            onRequestClose={closeModal2}
+                            contentLabel="onRequestClose Example"
+                            style={customStyles}
+                            onAfterOpen={() =>
+                                setloading("Do you want to re-post this link?")
+                            }
+                            shouldCloseOnOverlayClick={false}
+                        >
+                            <Box>
+                                <h1>{loading}</h1>
+                                <Buttons display={button}>
+                                    <B1 onClick={closeModal2}>No, cancel</B1>
+                                    <B2 onClick={postS}>Yes, share!</B2>
+                                </Buttons>
+                            </Box>
+                        </Modal>
+                    </div>
                 </div>
                 <div className="right">
                     <div className="header">
@@ -269,6 +444,11 @@ export default function Post(props) {
                                 onRequestClose={closeModal}
                                 contentLabel="onRequestClose Example"
                                 style={customStyles}
+                                onAfterOpen={() =>
+                                    setloading(
+                                        "Are you sure you want to delete this post?"
+                                    )
+                                }
                                 shouldCloseOnOverlayClick={false}
                             >
                                 <Box>
@@ -494,6 +674,22 @@ const PostContainer = styled.div`
         }
         .comment-actions:hover {
             cursor: pointer;
+        }
+
+        .share-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 27px;
+            text-align: center;
+            margin-top: 15px;
+
+            .share-count {
+                width: 100%;
+                margin-top: 5px;
+                font-size: 11px;
+                line-height: 13px;
+            }
         }
     }
 
