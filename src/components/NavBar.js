@@ -16,7 +16,7 @@ export default function NavBar(){
     const [suggestionsDisplay, setSuggestionsDisplay] = useState("none");
     const [suggestions, setSuggestions] = useState([])
     const [logoutMenu, setLogoutMenu] = useState(false)
-    const {setToken, userData} = useContext(contexto)
+    const {setToken, token, userData} = useContext(contexto)
     const navigate = useNavigate()
     
     function handleChange(e) {
@@ -24,11 +24,12 @@ export default function NavBar(){
         setSearch(new_search);
         if(new_search.length < 3)
             return;
-        axios.get(API_BASE_URL + `/search?name=${new_search}`)
+        axios.get(API_BASE_URL + `/search?name=${new_search}`, {"headers": {"Authorization": token.token}})
         .then(response => {setSuggestions(response.data)})
         .catch(e => console.log(e))
         return;
     }
+ 
     function handleBlur() {
         setTimeout(() => setSuggestionsDisplay('none'), 180);
     }
