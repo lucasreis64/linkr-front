@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { contexto } from "../context/userContext";
 import Post from "./Post";
-import { MutatingDots } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
 import { getTimeline } from "../service/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -17,11 +17,10 @@ export default function Posts(){
     const message2 = 'The are no posts yet';
 
     useEffect(() => {
-        getTimeline(token.token)
+        getTimeline(token?.token)
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
         })
         .catch()
@@ -33,19 +32,11 @@ export default function Posts(){
         .then((res)=> {
             setLoading(false);
             setPosts(res.data.data);
-            setUserData(res.data.loggedUser);
             setStatus(res.status);
         })
         .catch()
     }
-
-    const getMessage = () => {
-        if(status !== 200){
-            return message1;
-        }
-        return message2;
-    }
-
+    
     return(
         <>
             <PostsContainer>
@@ -53,7 +44,10 @@ export default function Posts(){
                     dataLength={posts.length}
                     next={fetchData}
                     hasMore={true}
-                    loader={<h4>Loading more posts...</h4>}
+                    loader={<Oval 
+                        color="#6D6D6D"
+                        secondaryColor="#5E5E5E"
+                    />}
                     endMessage={
                         <p style={{ textAlign: 'center' }}>
                         <b>Yay! You have seen it all</b>
@@ -61,7 +55,7 @@ export default function Posts(){
                     }
                 >
 
-                {posts && posts.length > 0 ?  (
+                {loading ? <></> : posts && posts.length > 0 ?  (
                     posts.map(p => <Post 
                         key={p.id} 
                         data={p} 
@@ -69,11 +63,11 @@ export default function Posts(){
                         setAtt={setAtt}
                         att={att}
                         token={token}/>)
-                ): (
-                    <div>{loading ? <MutatingDots 
-                        color="#FFFFFF"
-                        secondaryColor="#C6C6C6"
-                    /> : getMessage()}</div>
+                ) : (
+                   !userData.following_count ?
+                    <h4>Você ainda não seguiu ninguém. Siga alguém para ver suas publicações.</h4>
+                    :
+                    <h4>Seus amigos ainda não postaram nada. Siga mais pessoas para ver outras publicações.</h4>
                 )}
                 
                 </InfiniteScroll>
@@ -90,6 +84,17 @@ const PostsContainer = styled.div`
         margin-bottom: 50px;
     }
 
+    h4 {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 19px;
+        line-height: 23px;
+        letter-spacing: 0.05em;
+
+        color: #FFFFFF;
+    }
+
     @media screen and (max-width: 600px) {
         max-width: 100vw;
     }
@@ -97,4 +102,4 @@ const PostsContainer = styled.div`
     @media screen and (max-width: 768px) {
         max-width: 100vw;
     }
-`
+`   

@@ -13,7 +13,7 @@ Modal.setAppElement('#root');
 export default function Post(props){
     const {user, data, token} = {...props};
     const [form, setForm] = useState({ description: data.description });
-    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username));
+    const [isLiked, setIsLiked] = useState([...data?.likes_users]?.includes(user.username) || [...data?.likes_users]?.includes(user.id));
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -23,7 +23,6 @@ export default function Post(props){
     const [message, setMessage] = useState(likesCount > 0 ? updateLikeTooltip() : '');
     const { setAttpage } = useContext(contexto);
     const inputRef = useRef(null);
-    //console.log(data.user_id + " " + user.id)
     const navigate = useNavigate();
 
     const tagStyle = {
