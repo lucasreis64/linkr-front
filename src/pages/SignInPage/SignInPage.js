@@ -14,7 +14,7 @@ export default function SignIn(params) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const { permanecerConectado, setPermanecerConectado, setToken } =
+    const { permanecerConectado, setPermanecerConectado, setToken, setUserData } =
         useContext(contexto);
     tempoMs = 400;
 
@@ -30,7 +30,8 @@ export default function SignIn(params) {
                 const userInfoSerializada = JSON.stringify(login.data);
                 localStorage.setItem("userInfo", userInfoSerializada);
             }
-            setToken(login.data);
+            setToken({'token': login.data.token});
+            setUserData(login.data.userData)
             navigate("/timeline");
         } catch (e) {
             Swal.fire({

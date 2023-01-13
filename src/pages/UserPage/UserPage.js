@@ -3,7 +3,7 @@ import styled from "styled-components";
 import NavBar from "../../components/NavBar";
 import Post from "../../components/Post";
 import Trending from "../../components/Trending";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import React from "react";
 import { useContext } from "react";
 import { API_BASE_URL } from "../../assets/constants/constants";
@@ -14,16 +14,38 @@ export default function UserPage(){
 
     const { id } = useParams();
     const { token } = useContext(contexto);
-
+    const loggedUserData = useContext(contexto).userData;
     const [userData, setUserData] = React.useState("loading");
     const [att, setAtt] = React.useState(0);
+    const [loading, setLoading] = React.useState(false)
+    const navigate = useNavigate();
+
+    const config = {
+        "headers": {
+            "Authorization": token.token
+        }
+    }
 
     React.useEffect(() => {
         setUserData("loading")
-        axios.get(API_BASE_URL + '/users/' + id)
-        .then(response => setUserData(response.data))
+        setLoading(true)
+        axios.get(API_BASE_URL + '/users/' + id, config)
+        .then(response => {setLoading(false); setUserData(response.data)})
         .catch(e => console.log(e));
     }, [att, id])
+
+    function changeFollowState() {
+        setLoading(true)
+        if(userData.is_following)
+            axios.delete(API_BASE_URL + '/follow/' + id, config)
+            .then(response => {setLoading(false); setUserData({...userData, "is_following": false})})
+            .catch(() => alert("Não foi possível completar a operação"));
+        else
+            axios.post(API_BASE_URL + '/follow/' + id, {}, config)
+            .then(response => {setLoading(false); setUserData({...userData, "is_following": true})})
+            .catch(() => alert("Não foi possível completar a operação"));
+    }
+    console.log(loading)
 
     return (
         <>
@@ -35,14 +57,13 @@ export default function UserPage(){
                     <div className="user-info">
                         <div/>
                         <h1>{userData.username}'s Posts</h1>
+                        {id != loggedUserData.id ?
+                        <button className="follow-button" onClick={changeFollowState} disabled={loading}>
+                            {userData?.is_following ? "Unfollow" : "Follow"}
+                        </button> : <></>}
                     </div>
                     {userData !== "loading" ?  (
-                        userData.user_posts.map(p => <Post att={att} 
-                                                            setAtt={setAtt} 
-                                                            token={token} 
-                                                            key={p.id} 
-                                                            data={{...p, ...userData, 'user_id': id}} 
-                                                            user={{'id': token.id}}/>)
+                        userData.user_posts.map(p => <Post att={att} setAtt={setAtt} token={token} key={p.id} data={{...p, ...userData, 'user_id': id}} user={loggedUserData}/>)
                     ):(
                         <div className="loader-container">
                             <MutatingDots 
@@ -87,7 +108,8 @@ const Body = styled.div`
         margin-top: -120px;
         display: flex;
         font-family: 'Oswald', sans-serif;
-        font-size: 43px;
+        font-size: 2.5em;
+        text-align: center;
         color: white;
         margin-bottom: 48px;
         font-weight: 700; 
@@ -100,6 +122,26 @@ const Body = styled.div`
             background-size: cover;
             border-radius: 26.5px;
         }        
+    }
+    .follow-button {
+        cursor: pointer;
+        :disabled {
+            opacity: 70%;
+        }
+        width: 6em;
+        height: 31px;
+        border: 0px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 17px;
+        color: ${props => props.userData.is_following ? "#1877F2" : "#FFFFFF"};
+        background-color: ${props => props.userData.is_following ? "#FFFFFF" : "#1877F2"};
+        border-radius: 5px;
+        position: absolute;
+        right: 0px;
+        align-self: center;
     }
 `
 

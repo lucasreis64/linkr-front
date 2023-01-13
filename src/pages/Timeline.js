@@ -55,7 +55,6 @@ const Body = styled.div`
     align-items: flex-start;
     margin-top: 100px;
     margin-left: 20%;
-    width: 100%;
 
     @media (max-width: 600px)
     {
