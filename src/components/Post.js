@@ -33,6 +33,7 @@ export default function Post(props) {
         [...data?.likes_users]?.includes(user.username)
     );
     const [isRepost, setIsRepost] = useState(false);
+    const [isRepostBy, setIsRepostBy] = useState(false);
     const [isEditable, setIsEditable] = useState(user.id === data.user_id);
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -47,6 +48,8 @@ export default function Post(props) {
     );
     const [toggleComments, setToggleComments] = useState(false);
     const [msgRepost, setMsgRepost] = useState("");
+    const [border, setBorder] = useState("none");
+    const [uRepost, setuRepost] = useState("");
     const [attRepost, setAttRepost] = useState(false);
     const { setAttpage } = useContext(contexto);
     const [comment, setComment] = useState(null);
@@ -70,13 +73,29 @@ export default function Post(props) {
         if (isEditing) {
             inputRef.current.focus();
         }
-    }, [reloadComments, isEditing]);
+        
+      }, [isEditing]);
 
-    useEffect(() => {
-        if (isEditing) {
-            inputRef.current.focus();
+      useEffect(() => {
+        if (data.repostBy != undefined) 
+        {
+          setIsRepostBy(true);
+          setBorder("0px 0px 16px 16px");
+          if(data.repostBy === user.username)
+          {
+            setuRepost("Voce");
+          }
+          else
+          {
+            setuRepost(data.repostBy);
+          }
         }
-    }, [isEditing]);
+        else
+        {
+            setIsRepostBy(false);
+        }
+        
+      }, [props.att]);
 
     useEffect(() => {
         let isApiSubscribed = true;
@@ -325,8 +344,17 @@ export default function Post(props) {
     }
 
     return (
+        <>
+            {isRepostBy? (
+                            <Repost>
+                                <BiRepost cursor={"pointer"} color="white" /> <h1>Re-post by {uRepost}</h1>
+                            </Repost>             
+                           ): (
+                            ''
+                           )} 
+            
         <PostAndCommentContainer>
-            <PostContainer>
+            <PostContainer border = {border}>
                 <div className="left">
                     <img
                         className="profile-picture"
@@ -533,7 +561,8 @@ export default function Post(props) {
                 true
             )}
         </PostAndCommentContainer>
-    );
+        </>
+    )
 }
 
 const customStyles = {
@@ -548,6 +577,27 @@ const customStyles = {
         border: "none",
     },
 };
+
+  const Repost = styled.div`
+    display: flex;
+    width: 100%;
+    height: 30px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding: 10px;
+    background: #1E1E1E;
+    border-radius: 16px 16px 0px 0px;
+       h1{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        margin: 5px;
+        color: #FFFFFF;
+       }
+`;
 
 const Box = styled.div`
     display: flex;
@@ -621,8 +671,8 @@ const PostContainer = styled.div`
     color: #ffffff;
     font-family: "Lato", sans-serif;
     box-sizing: border-box;
-
-    a {
+    border-radius: ${props => props.border};
+    a{
         text-decoration: none;
     }
 
