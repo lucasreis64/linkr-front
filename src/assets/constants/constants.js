@@ -1,7 +1,7 @@
-export const API_BASE_URL="http://localhost:4000";
+export const API_BASE_URL="https://linkr-backend.onrender.com/4000";
 export const URLS = {
-  LOGIN: "http://localhost:4000/signin",
-  SIGNUP: "http://localhost:4000/signup",
-  TIMELINE: "http://localhost:4000/timeline",
-  HASHTAG: "http://localhost:4000/hashtag/"
+  LOGIN: "https://linkr-backend.onrender.com/signin",
+  SIGNUP: "https://linkr-backend.onrender.com/signup",
+  TIMELINE: "https://linkr-backend.onrender.com/timeline",
+  HASHTAG: "https://linkr-backend.onrender.com/hashtag/"
 };
