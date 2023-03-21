@@ -1,6 +1,6 @@
 🇬🇧
 
-Linkr it's a link-sharing social media with a responsive layout inspired by Twitter. It has a lot of functionalities of a usual social media: register/login, an infinite timeline that prioritizes posts from your interests, trending, profiles, etc. It was constructed by 5 people following the SCRUM method.
+Linkr is a link-sharing social media with a responsive layout inspired by Twitter. It has a lot of functionalities of a usual social media: register/login, an infinite timeline that prioritizes posts from your interests, trending, profiles, etc. It was constructed by 5 people following the SCRUM method.
 
 Front-end was built using React and its libraries such as Axios, Styled-Components, and others.
 The back-end was built using Node with Express.js and PostgreSQL.
